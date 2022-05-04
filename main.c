@@ -91,7 +91,7 @@ void task2( void *pvParameters )
 	for(;;)
 	{
 		xTaskDelayUntil( &xLastWakeTime, xFrequency );
-		puts("Task2"); // stdio functions are not reentrant - Should normally be protected by MUTEX
+		puts("Task2 hallo!"); // stdio functions are not reentrant - Should normally be protected by MUTEX
 		PORTA ^= _BV(PA7);
 	}
 }
