@@ -36,7 +36,7 @@ static void _lora_setup(void)
 	char _out_buf[20];
 	lora_driver_returnCode_t rc;
 	
-    status_leds_slowBlink(led_ST2); // OPTIONAL: Led the green led blink slowly while we are setting up LoRa
+	status_leds_slowBlink(led_ST2); // OPTIONAL: Led the green led blink slowly while we are setting up LoRa
 	
 	// Factory reset the transceiver
 	printf("FactoryReset >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_rn2483FactoryReset()));
@@ -128,21 +128,25 @@ void lora_handler_task( void *pvParameters )
 	
 	for(;;)
 	{
-		xTaskDelayUntil( &xLastWakeTime, xFrequency );
-
+		
 		// Some dummy payload
-		uint16_t hum = 12345; // Dummy humidity
-		int16_t temp = 675; // Dummy temp
-		uint16_t co2_ppm = 1050; // Dummy CO2
-
+		uint16_t hum = 505; // Dummy humidity
+		int16_t temp = 22; // Dummy temp
+		uint16_t co2_ppm = 800; // Dummy CO2
+		
 		_uplink_payload.bytes[0] = hum >> 8;
 		_uplink_payload.bytes[1] = hum & 0xFF;
+		   
 		_uplink_payload.bytes[2] = temp >> 8;
 		_uplink_payload.bytes[3] = temp & 0xFF;
 		_uplink_payload.bytes[4] = co2_ppm >> 8;
 		_uplink_payload.bytes[5] = co2_ppm & 0xFF;
-
+		
+		
 		//status_leds_shortPuls(led_ST4);  // OPTIONAL
+		
 		printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, &_uplink_payload)));
+		
+		xTaskDelayUntil( &xLastWakeTime, xFrequency );
 	}
 }

@@ -83,7 +83,7 @@ void task1( void *pvParameters )
 		
 
 		if(MHZ19_OK != mh_z19_takeMeassuring()){
-			printf("SOmething WIthTHE CO2Went WONG!\n");
+			printf("SOmething WIthTHE CO2 Went WONG!\n");
 			
 		}
 			
@@ -96,46 +96,63 @@ void task2( void *pvParameters )
 	TickType_t xLastWakeTime;
 	const TickType_t xFrequency = 1000/portTICK_PERIOD_MS; // 1000 ms
 
+	uint16_t temperature;
+    uint16_t humidity;
+	
 	// Initialise the xLastWakeTime variable with the current time.
 	xLastWakeTime = xTaskGetTickCount();
 	status_leds_fastBlink(led_ST3);
+	
 	if (HIH8120_OK != hih8120_wakeup()){
 		printf("temp/hum did not wake up\n");
 	}
+	
 	xTaskDelayUntil(&xLastWakeTime,100);
+	
 	if (HIH8120_OK != hih8120_measure()){
 		printf("the measurement went wrong\n");
 	}
 
-	display_7seg_displayHex("JOHN"); // why no work ?
-
 	for(;;)
 	{
-		xTaskDelayUntil( &xLastWakeTime, xFrequency );
+		
 		puts("Task2 hallo!"); // stdio functions are not reentrant - Should normally be protected by MUTEX
 		PORTA ^= _BV(PA7);
 		
 		if(hih8120_isReady()){
 			printf("The measurement was ready!\n");
-			uint16_t temperature = hih8120_getTemperature_x10();
+			
+			temperature = hih8120_getTemperature_x10();
 			printf("Temp: %d \n", temperature);
-			uint16_t humidity = hih8120_getHumidityPercent_x10();
+			
+			humidity = hih8120_getHumidityPercent_x10();
 			printf("humidity: %d \n", humidity);
 			
 			if (HIH8120_OK != hih8120_wakeup()){
 				printf("temp/hum did not wake up\n");
 			}
+			
 			xTaskDelayUntil(&xLastWakeTime,100);
 			if (HIH8120_OK != hih8120_measure()){
 				printf("the measurement went wrong\n");
 			}
+			
 		}
+	
+	
+		xTaskDelayUntil( &xLastWakeTime, xFrequency );
+		
+
 	}
+	
+	
 }
 
 void myCo2CallBack(uint16_t ppm)
 {
+	
 	printf("call back CO2: %d\n", ppm);
+	
 }
 /*-----------------------------------------------------------*/
 void initialiseSystem()
@@ -182,6 +199,7 @@ int main(void)
 {
 	initialiseSystem(); // Must be done as the very first thing
 	printf("Program Started john\n");
+	
 	vTaskStartScheduler(); // Initialize and run the freeRTOS scheduler. Execution should never return from here.
 	
 	
