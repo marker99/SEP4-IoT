@@ -123,22 +123,23 @@ void lora_handler_task( void *pvParameters )
 	_uplink_payload.portNo = 2;
 
 	TickType_t xLastWakeTime;
-	const TickType_t xFrequency = pdMS_TO_TICKS(300000UL); // Upload message every 5 minutes (300000 ms)
+	const TickType_t xFrequency = pdMS_TO_TICKS(10000UL); // Upload message every 5 minutes (300000 ms)
 	xLastWakeTime = xTaskGetTickCount();
 	
 	for(;;)
 	{
 		
 		// Some dummy payload
+		int16_t temp = 225; // Dummy temp
 		uint16_t hum = 505; // Dummy humidity
-		int16_t temp = 22; // Dummy temp
-		uint16_t co2_ppm = 800; // Dummy CO2
-		
-		_uplink_payload.bytes[0] = hum >> 8;
-		_uplink_payload.bytes[1] = hum & 0xFF;
+		uint16_t co2_ppm = 850; // Dummy CO2
+
+		_uplink_payload.bytes[0] = temp >> 8;
+		_uplink_payload.bytes[1] = temp & 0xFF;
+
+		_uplink_payload.bytes[2] = hum >> 8;
+		_uplink_payload.bytes[3] = hum & 0xFF;
 		   
-		_uplink_payload.bytes[2] = temp >> 8;
-		_uplink_payload.bytes[3] = temp & 0xFF;
 		_uplink_payload.bytes[4] = co2_ppm >> 8;
 		_uplink_payload.bytes[5] = co2_ppm & 0xFF;
 		
