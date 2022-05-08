@@ -24,12 +24,16 @@
 #include <hih8120.h>
 #include <mh_z19.h>
 
+//data object
+#include "measurment.h"
+
 // define two Tasks
 void task1( void *pvParameters );
 void task2( void *pvParameters );
 
 // define semaphore handle
-SemaphoreHandle_t xTestSemaphore;
+SemaphoreHandle_t xTask1Semaphore;
+SemaphoreHandle_t xTask2Semaphore;
 
 // Prototype for LoRaWAN handler
 void lora_handler_initialise(UBaseType_t lora_handler_task_priority);
@@ -69,90 +73,61 @@ void create_tasks_and_semaphores(void)
 /*-----------------------------------------------------------*/
 void task1( void *pvParameters )
 {
-	TickType_t xLastWakeTime;
-	const TickType_t xFrequency = 500/portTICK_PERIOD_MS; // 500 ms
-
-	// Initialise the xLastWakeTime variable with the current time.
-	xLastWakeTime = xTaskGetTickCount();
 	
 	for(;;)
 	{
-		xTaskDelayUntil( &xLastWakeTime, xFrequency );
-		puts("Task1"); // stdio functions are not reentrant - Should normally be protected by MUTEX
-		PORTA ^= _BV(PA0);
-		
-
-		if(MHZ19_OK != mh_z19_takeMeassuring()){
-			printf("SOmething WIthTHE CO2 Went WONG!\n");
+		if (xSemaphoreTake(xTask1Semaphore)){
+			puts("Task1");
+			
+			// callback function gives semaphore
+			if(MHZ19_OK != mh_z19_takeMeassuring()){
+				printf("SOmething WIthTHE CO2 Went WONG!\n");
+			}
+			
 			
 		}
-			
 	}
 }
 
 /*-----------------------------------------------------------*/
 void task2( void *pvParameters )
 {
-	TickType_t xLastWakeTime;
-	const TickType_t xFrequency = 1000/portTICK_PERIOD_MS; // 1000 ms
+	
 
-	uint16_t temperature;
-    uint16_t humidity;
 	
-	// Initialise the xLastWakeTime variable with the current time.
-	xLastWakeTime = xTaskGetTickCount();
-	status_leds_fastBlink(led_ST3);
 	
-	if (HIH8120_OK != hih8120_wakeup()){
-		printf("temp/hum did not wake up\n");
-	}
-	
-	xTaskDelayUntil(&xLastWakeTime,100);
-	
-	if (HIH8120_OK != hih8120_measure()){
-		printf("the measurement went wrong\n");
-	}
-
 	for(;;)
 	{
 		
-		puts("Task2 hallo!"); // stdio functions are not reentrant - Should normally be protected by MUTEX
-		PORTA ^= _BV(PA7);
-		
-		if(hih8120_isReady()){
-			printf("The measurement was ready!\n");
-			
-			temperature = hih8120_getTemperature_x10();
-			printf("Temp: %d \n", temperature);
-			
-			humidity = hih8120_getHumidityPercent_x10();
-			printf("humidity: %d \n", humidity);
+		if (xSemaphoreTake(xTask2Semaphore)){
+			status_leds_fastBlink(led_ST3);
+
+			puts("Measure tempratur and humidity started");
 			
 			if (HIH8120_OK != hih8120_wakeup()){
 				printf("temp/hum did not wake up\n");
 			}
 			
 			xTaskDelayUntil(&xLastWakeTime,100);
+			
 			if (HIH8120_OK != hih8120_measure()){
 				printf("the measurement went wrong\n");
 			}
 			
+			xTaskDelayUntil(&xLastWakeTime,100);
+			
+			if(hih8120_isReady()){
+				status_leds_ledOff(led_ST3);
+				xSemaphoreGive(xTask2Semaphore);
+				
+			}
 		}
-	
-	
-		xTaskDelayUntil( &xLastWakeTime, xFrequency );
-		
-
 	}
-	
-	
 }
 
 void myCo2CallBack(uint16_t ppm)
 {
-	
-	printf("call back CO2: %d\n", ppm);
-	
+	xSemaphoreGive(xTask1Semaphore);
 }
 /*-----------------------------------------------------------*/
 void initialiseSystem()
@@ -184,7 +159,7 @@ void initialiseSystem()
 	// Initialize temp/hum
 	if ( HIH8120_OK != hih8120_initialise() )
 	{
-	
+		
 		printf("failed initializing temp/hum");
 	}
 
@@ -198,15 +173,46 @@ void initialiseSystem()
 int main(void)
 {
 	initialiseSystem(); // Must be done as the very first thing
-	printf("Program Started john\n");
+	printf("Program Started \n");
 	
 	vTaskStartScheduler(); // Initialize and run the freeRTOS scheduler. Execution should never return from here.
+	
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 30000/portTICK_PERIOD_MS; // 5min ms
+
+	
+	uint16_t temperature;
+	uint16_t humidity;
+	
+	measurment_t measurment;
+	
+	
+	// Initialise the xLastWakeTime variable with the current time.
+	xLastWakeTime = xTaskGetTickCount();
 	
 	
 	/* Replace with your application code */
 	while (1)
 	{
 		
+		xTaskDelayUntil(xLastWakeTime, xFrequency);
+		
+		xSemaphoreGive(xTask1Semaphore);
+		xSemaphoreGive(xTask2Semaphore);
+		
+		if (xSemaphoreTake(xTask1Semaphore)){
+			
+			
+			
+		}
+		
+		
+		
+		temperature = hih8120_getTemperature_x10();
+		printf("Temp: %d \n", temperature);
+		
+		humidity = hih8120_getHumidityPercent_x10();
+		printf("humidity: %d \n", humidity);
 		
 	}
 }

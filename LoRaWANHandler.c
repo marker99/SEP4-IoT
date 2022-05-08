@@ -6,7 +6,7 @@
 */
 #include <stddef.h>
 #include <stdio.h>
-
+#include "measurment.h"
 #include <ATMEGA_FreeRTOS.h>
 
 #include <lora_driver.h>
@@ -149,5 +149,31 @@ void lora_handler_task( void *pvParameters )
 		printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, &_uplink_payload)));
 		
 		xTaskDelayUntil( &xLastWakeTime, xFrequency );
+	}
+	
+	void send_measurment(measurment_t *measurment){
+		
+		//prepare payload
+		_uplink_payload.len = 6;
+		_uplink_payload.portNo = 2;
+		
+		//extract data from measurment
+		int16_t temp = measurment.tempratur;
+		uint16_t hum = measurment.humidity; 
+		uint16_t co2_ppm = measurment.co2_ppm;
+
+		// format data into bytes (two for each value)
+		_uplink_payload.bytes[0] = temp >> 8;
+		_uplink_payload.bytes[1] = temp & 0xFF;
+
+		_uplink_payload.bytes[2] = hum >> 8;
+		_uplink_payload.bytes[3] = hum & 0xFF;
+		
+		_uplink_payload.bytes[4] = co2_ppm >> 8;
+		_uplink_payload.bytes[5] = co2_ppm & 0xFF;
+		
+		// send to loraWan using loraWan drivers
+		printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, &_uplink_payload)));
+		
 	}
 }
