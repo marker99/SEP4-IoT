@@ -22,6 +22,7 @@ static lora_driver_payload_t _uplink_payload;
 
 void lora_handler_initialise(UBaseType_t lora_handler_task_priority)
 {
+	
 	xTaskCreate(
 	lora_handler_task
 	,  "LRHand"  // A name just for humans
@@ -79,29 +80,17 @@ static void _lora_setup(void)
 		}
 		else
 		{
+			
 			break;
 		}
-	} while (--maxJoinTriesLeft);
+	} while (--maxJoinTriesLeft );
 
 	if (rc == LORA_ACCEPTED)
 	{
 		// Connected to LoRaWAN :-)
 		// Make the green led steady
-		//status_leds_ledOn(led_ST2); // OPTIONAL
-	}
-	else
-	{
-		// Something went wrong
-		// Turn off the green led
-		//status_leds_ledOff(led_ST2); // OPTIONAL
-		// Make the red led blink fast to tell something went wrong
-		//status_leds_fastBlink(led_ST1); // OPTIONAL
-
-		// Lets stay here
-		while (1)
-		{
-			taskYIELD();
-		}
+		status_leds_ledOn(led_ST2); // OPTIONAL
+		printf("Lora wan accpeted!\n");
 	}
 }
 
@@ -114,66 +103,43 @@ void lora_handler_task( void *pvParameters )
 	lora_driver_resetRn2483(0);
 	// Give it a chance to wakeup
 	vTaskDelay(150);
-
+	
 	lora_driver_flushBuffers(); // get rid of first version string from module after reset!
 
 	_lora_setup();
 	
-	_uplink_payload.len = 6;
-	_uplink_payload.portNo = 2;
-
-	TickType_t xLastWakeTime;
-	const TickType_t xFrequency = pdMS_TO_TICKS(10000UL); // Upload message every 5 minutes (300000 ms)
-	xLastWakeTime = xTaskGetTickCount();
-	
 	for(;;)
 	{
-		
-		// Some dummy payload
-		int16_t temp = 225; // Dummy temp
-		uint16_t hum = 505; // Dummy humidity
-		uint16_t co2_ppm = 850; // Dummy CO2
-
-		_uplink_payload.bytes[0] = temp >> 8;
-		_uplink_payload.bytes[1] = temp & 0xFF;
-
-		_uplink_payload.bytes[2] = hum >> 8;
-		_uplink_payload.bytes[3] = hum & 0xFF;
-		   
-		_uplink_payload.bytes[4] = co2_ppm >> 8;
-		_uplink_payload.bytes[5] = co2_ppm & 0xFF;
-		
-		
-		//status_leds_shortPuls(led_ST4);  // OPTIONAL
-		
-		printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, &_uplink_payload)));
-		
-		xTaskDelayUntil( &xLastWakeTime, xFrequency );
-	}
-	
-	void send_measurment(measurment_t *measurment){
-		
-		//prepare payload
-		_uplink_payload.len = 6;
-		_uplink_payload.portNo = 2;
-		
-		//extract data from measurment
-		int16_t temp = measurment.tempratur;
-		uint16_t hum = measurment.humidity; 
-		uint16_t co2_ppm = measurment.co2_ppm;
-
-		// format data into bytes (two for each value)
-		_uplink_payload.bytes[0] = temp >> 8;
-		_uplink_payload.bytes[1] = temp & 0xFF;
-
-		_uplink_payload.bytes[2] = hum >> 8;
-		_uplink_payload.bytes[3] = hum & 0xFF;
-		
-		_uplink_payload.bytes[4] = co2_ppm >> 8;
-		_uplink_payload.bytes[5] = co2_ppm & 0xFF;
-		
-		// send to loraWan using loraWan drivers
-		printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, &_uplink_payload)));
-		
+		taskYIELD();
 	}
 }
+
+
+void send_measurment(measurment_t *newMeasurment){
+	
+	//prepare payload
+	_uplink_payload.len = 6;
+	_uplink_payload.portNo = 2;
+	
+	//extract data from measurment
+	int16_t temp = newMeasurment->tempratur;
+	uint16_t hum = newMeasurment->humidity;
+	uint16_t co2_ppm = newMeasurment->co2_ppm;
+
+	// format data into bytes (two for each value)
+	_uplink_payload.bytes[0] = temp >> 8;
+	_uplink_payload.bytes[1] = temp & 0xFF;
+
+	_uplink_payload.bytes[2] = hum >> 8;
+	_uplink_payload.bytes[3] = hum & 0xFF;
+	
+	_uplink_payload.bytes[4] = co2_ppm >> 8;
+	_uplink_payload.bytes[5] = co2_ppm & 0xFF;
+	
+	// send to loraWan using loraWan drivers
+	printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, &_uplink_payload)));
+	
+}
+
+
+
