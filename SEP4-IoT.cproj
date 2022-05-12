@@ -195,6 +195,18 @@
     <Compile Include="drivers\twi.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="sensors\co2_sensor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sensors\co2_sensor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sensors\temp_hum_sensor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sensors\temp_hum_sensor.h">
+      <SubType>compile</SubType>
+    </Compile>
     <None Include="FreeRTOS\Example\main.c">
       <SubType>compile</SubType>
     </None>
@@ -305,6 +317,7 @@
     <Folder Include="FreeRTOS\Example\" />
     <Folder Include="FreeRTOS\FreeRTOSTraceDriver\" />
     <Folder Include="FreeRTOS\src\" />
+    <Folder Include="sensors" />
   </ItemGroup>
   <ItemGroup>
     <None Include="drivers\.git">
