@@ -32,8 +32,6 @@ void co2_sensor_initialize(UBaseType_t task_priority)
 	
 }
 
-
-
 void co2_sensor_task_handler(void *pvParamerters)
 {
 
