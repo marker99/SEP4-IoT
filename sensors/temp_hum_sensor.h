@@ -20,8 +20,8 @@
 
 typedef enum temp_hum_statusCodes {
 	HIH8120_OK	/**< Everything went well */
-	,HIH8120_OUT_OF_HEAP /**< Not enough heap to initialise the driver */
-	,HIH8120_DRIVER_NOT_INITIALISED /**< Driver must be initialise before use */
+	,HIH8120_OUT_OF_HEAP /**< Not enough heap to initialize the driver */
+	,HIH8120_DRIVER_NOT_INITIALISED /**< Driver must be initialize before use */
 	,HIH8120_TWI_BUSY /**< The two wire/I2C interface is busy */
 } temp_hum_statusCodes_t;
 
@@ -33,7 +33,7 @@ void temp_hum_sensorInitialize(UBaseType_t task_priority);
 
 void temp_hum_sensorTaskHandler(void *pvParameters);
 
-int16_t temp_hum_GetTemerature(void);
+int16_t temp_hum_GetTemperature(void);
 
 uint16_t temp_hum_GetHumidity(void);
 
