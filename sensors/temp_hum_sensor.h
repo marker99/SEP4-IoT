@@ -17,7 +17,7 @@
 // drivers for sensors
 #include <hih8120.h>
 
-
+//Ignore enums for now
 typedef enum temp_hum_statusCodes {
 	HIH8120_OK	/**< Everything went well */
 	,HIH8120_OUT_OF_HEAP /**< Not enough heap to initialize the driver */
@@ -29,12 +29,12 @@ typedef enum temp_hum_statusCodes {
 #ifndef TEMP_HUM_SENSOR_H_
 #define TEMP_HUM_SENSOR_H_
 
-void temp_hum_sensorInitialize(UBaseType_t task_priority);
+void temp_hum_sensor_initialize(UBaseType_t task_priority);
 
-void temp_hum_sensorTaskHandler(void *pvParameters);
+void temp_hum_sensor_taskHandler(void *pvParameters);
 
-int16_t temp_hum_GetTemperature(void);
+int16_t temp_hum_getTemperature(void);
 
-uint16_t temp_hum_GetHumidity(void);
+uint16_t temp_hum_getHumidity(void);
 
 #endif /* TEMP_HUM_SENSOR_H_ */

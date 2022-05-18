@@ -57,7 +57,7 @@ void temp_hum_sensor_task_run(){
 }
 
 
-int16_t temp_hum_GetTemperature(void){
+int16_t temp_hum_getTemperature(void){
 	
 	if (hih8120_isReady()){
 		return hih8120_getTemperature_x10();
@@ -65,7 +65,7 @@ int16_t temp_hum_GetTemperature(void){
 	return 0;
 }
 
-uint16_t temp_hum_GetHumidity(void){
+uint16_t temp_hum_getHumidity(void){
 	// double check, would probably not be necessary when called after event group is set as ready
 	if (hih8120_isReady()){
 		return hih8120_getHumidityPercent_x10();
