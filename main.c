@@ -1,7 +1,7 @@
 /*
 * main.c
 * Author : IHA
-*
+* just an other test from the New structure branch 
 * Example main file including LoRaWAN setup
 * Just for inspiration :)
 a test from the new structure branch
