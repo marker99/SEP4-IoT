@@ -31,7 +31,7 @@ typedef enum temp_hum_statusCodes {
 
 void temp_hum_sensor_initialize(UBaseType_t task_priority);
 
-void temp_hum_sensor_taskHandler(void *pvParameters);
+void temp_hum_sensor_task_handler(void *pvParameters);
 
 int16_t temp_hum_getTemperature(void);
 
