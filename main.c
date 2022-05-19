@@ -4,6 +4,7 @@
 *
 * Example main file including LoRaWAN setup
 * Just for inspiration :)
+a test from the new structure branch
 */
 
 #include <stdio.h>
