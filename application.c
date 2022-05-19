@@ -9,13 +9,12 @@
 #include <task.h>
 #include <semphr.h>
 #include <event_groups.h>
-#include <>
+
 
 typedef struct application_task{
 	
 	EventGroupHandle_t data_ready_event_group;
 	EventGroupHandle_t measure_event_group;
-	
 	
 
 } application_task_t;

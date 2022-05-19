@@ -26,6 +26,7 @@ void temp_hum_sensor_initialize(UBaseType_t task_priority)
 
 	xTaskCreate(
 	temp_hum_sensor_task_handler,
+	"Temp/humSensorTask",
 	configMINIMAL_STACK_SIZE,
 	NULL,
 	task_priority,

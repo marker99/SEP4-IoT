@@ -24,7 +24,9 @@ void co2_sensor_initialize(UBaseType_t task_priority)
 	mh_z19_initialise(ser_USART3);
 	mh_z19_injectCallBack(_co2_sensor_callback);
 	
-	xTaskCreate("CO2_Sensor", 
+	xTaskCreate(
+	co2_sensor_taskHandler,
+	"CO2_Sensor", 
 	configMINIMAL_STACK_SIZE, 
 	NULL, 
 	task_priority, 
