@@ -1,11 +1,10 @@
 /*
 * main.c
 * Author : IHA
-*
+* just an other test from the New structure branch (now pushed to test)
 * Example main file including LoRaWAN setup
 * Just for inspiration :)
- hallo this is on the test branch
- another test from test
+a test from the new structure branch (now pushed to test)
 */
 
 #include <stdio.h>
