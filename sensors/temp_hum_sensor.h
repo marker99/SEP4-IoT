@@ -8,22 +8,10 @@
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
-
 // IO includes
 #include <stdio.h>
-#include <avr/io.h>
-#include <serial.h>
-
 // drivers for sensors
 #include <hih8120.h>
-
-//Ignore enums for now
-typedef enum temp_hum_statusCodes {
-	HIH8120_OK	/**< Everything went well */
-	,HIH8120_OUT_OF_HEAP /**< Not enough heap to initialize the driver */
-	,HIH8120_DRIVER_NOT_INITIALISED /**< Driver must be initialize before use */
-	,HIH8120_TWI_BUSY /**< The two wire/I2C interface is busy */
-} temp_hum_statusCodes_t;
 
 
 #ifndef TEMP_HUM_SENSOR_H_

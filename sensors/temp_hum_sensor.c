@@ -7,15 +7,6 @@
 
 #include "temp_hum_sensor.h"
 
-
-// IO includes
-#include <stdio.h>
-#include <avr/io.h>
-#include <serial.h>
-
-// driver for temp_hum
-#include <hih8120.h>
-
 void temp_hum_sensor_initialize(UBaseType_t task_priority)
 {
 	// Initialize temp/hum
