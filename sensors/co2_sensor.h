@@ -12,8 +12,6 @@
 
 // IO includes
 #include <stdio.h>
-#include <avr/io.h>
-#include <serial.h>
 
 // drivers for sensors
 #include <mh_z19.h>

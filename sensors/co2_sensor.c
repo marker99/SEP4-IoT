@@ -7,15 +7,6 @@
 
 #include "co2_sensor.h"
 
-// freeRtos include
-#include <ATMEGA_FreeRTOS.h>
-#include <task.h>
-#include <semphr.h>
-
-// IO includes
-#include <stdio.h>
-#include <avr/io.h>
-#include <serial.h>
 
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
@@ -63,6 +54,8 @@ void _co2_sensor_task_init(){
 
 void _co2_sensor_task_run(){
 	
+		
+		
 		/*
 		// replace with check on event group
 		if (xSemaphoreTake(xTask1Semaphore, portMAX_DELAY)){
