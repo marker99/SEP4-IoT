@@ -8,6 +8,7 @@
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
+#include <event_groups.h>
 
 // IO includes
 #include <stdio.h>

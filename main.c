@@ -35,9 +35,6 @@ void taskHandler(void *pvParameters);
 SemaphoreHandle_t xTask1Semaphore;
 SemaphoreHandle_t xTask2Semaphore;
 
-// Prototype for LoRaWAN handler
-void lora_handler_initialise(UBaseType_t lora_handler_task_priority);
-
 /*-----------------------------------------------------------*/
 void create_tasks_and_semaphores(void)
 {
