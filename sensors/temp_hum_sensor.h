@@ -21,6 +21,10 @@ void temp_hum_sensor_initialize(UBaseType_t task_priority);
 
 void temp_hum_sensor_task_handler(void *pvParameters);
 
+void temp_hum_sensor_task_init();
+
+void temp_hum_sensor_task_run();
+
 int16_t temp_hum_getTemperature(void);
 
 uint16_t temp_hum_getHumidity(void);

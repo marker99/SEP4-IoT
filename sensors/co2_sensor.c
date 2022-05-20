@@ -47,7 +47,7 @@ void co2_sensor_taskHandler(void *pvParamerters)
 
 void _co2_sensor_callback(uint16_t ppm)
 {
-	// could set a variable, or set the "measurment event group" to done;
+	// could set a variable, and/or set the "measurment event group" to done;
 	
 }
 

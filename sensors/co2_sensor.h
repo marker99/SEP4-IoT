@@ -26,4 +26,9 @@ void co2_sensor_taskHandler(void *pvParamerters);
 
 void _co2_sensor_callback(uint16_t ppm);
 
+void _co2_sensor_task_init();
+
+void _co2_sensor_task_run();
+
+
 #endif /* co2_sensor_H_ */
