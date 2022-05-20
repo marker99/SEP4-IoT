@@ -17,7 +17,7 @@
 #ifndef TEMP_HUM_SENSOR_H_
 #define TEMP_HUM_SENSOR_H_
 
-void temp_hum_sensor_initialize(UBaseType_t task_priority);
+void temp_hum_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t startGroup);
 
 void temp_hum_sensor_task_handler(void *pvParameters);
 

@@ -20,7 +20,7 @@
 #ifndef co2_sensor_H_
 #define co2_sensor_H_
 
-void co2_sensor_initialize(UBaseType_t task_priority);
+void co2_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t startGroup);
 
 void co2_sensor_taskHandler(void *pvParamerters);
 

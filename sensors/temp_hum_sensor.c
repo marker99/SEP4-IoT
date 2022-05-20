@@ -7,13 +7,20 @@
 
 #include "temp_hum_sensor.h"
 
-void temp_hum_sensor_initialize(UBaseType_t task_priority)
+
+static EventGroupHandle_t _readyGroup;
+static EventGroupHandle_t _startGroup;
+
+void temp_hum_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t startGroup)
 {
 	// Initialize temp/hum
 	if ( HIH8120_OK != hih8120_initialise() )
 	{
 		printf("failed initializing temp/hum \n");
 	}
+	
+	_readyGroup = readyGroup;
+	_startGroup = startGroup;
 
 	xTaskCreate(
 	temp_hum_sensor_task_handler,
