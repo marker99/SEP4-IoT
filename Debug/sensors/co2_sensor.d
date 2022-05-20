@@ -23,9 +23,9 @@ sensors/co2_sensor.d sensors/co2_sensor.o: ../sensors/co2_sensor.c \
  ../FreeRTOS/src/timers.h \
  e:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h \
  e:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
- ../drivers/serial.h \
+ ../drivers/mh_z19.h \
  e:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h \
- ../drivers/mh_z19.h
+ ../drivers/serial.h
 
 ../sensors/co2_sensor.h:
 
@@ -89,8 +89,8 @@ e:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 e:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h:
 
-../drivers/serial.h:
+../drivers/mh_z19.h:
 
 e:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h:
 
-../drivers/mh_z19.h:
+../drivers/serial.h:
