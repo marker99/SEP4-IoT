@@ -17,18 +17,18 @@
 #include <avr/io.h>
 #include <serial.h>
 
-static EventGroupHandle_t _readyGroup;
-static EventGroupHandle_t _startGroup;
+static EventGroupHandle_t _dataReadyEventGroup;
+static EventGroupHandle_t _measureEventGroup;
 
-void co2_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t startGroup)
+void co2_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t measureGroup)
 {
 	
 	//  
 	mh_z19_initialise(ser_USART3);
 	mh_z19_injectCallBack(_co2_sensor_callback);
 	
-	_readyGroup = readyGroup;
-	_startGroup = startGroup;
+	_dataReadyEventGroup = readyGroup;
+	_measureEventGroup = measureGroup;
 	
 	xTaskCreate(
 	co2_sensor_taskHandler,
