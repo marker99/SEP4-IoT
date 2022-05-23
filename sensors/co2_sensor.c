@@ -45,7 +45,7 @@ void co2_sensor_taskHandler(void *pvParamerters)
 
 void _co2_sensor_callback(uint16_t ppm)
 {
-	*measuredCO2 = *ppm
+	measuredCO2 = ppm;
 	// could set a variable, and/or set the "measurment event group" to done;
 }
 
@@ -70,6 +70,6 @@ void _co2_sensor_task_run(){
 }
 
 uint16_t co2_sensor_getCO2(){
-	return measuredCO2
+	return measuredCO2;
 }
 

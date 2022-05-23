@@ -6,14 +6,14 @@
 */
 
 #include "temp_hum_sensor.h"
-#include "ApplicationConfig.h"
+#include "../application_config.h"
 
 
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 
 static TickType_t xLastWakeTime;
-const TickType_t xFrequency = 60000/pdMS_TO_TICKS;
+const TickType_t xFrequency = pdMS_TO_TICKS(60000);
 
 
 static int16_t measuredTemperature;
@@ -75,7 +75,7 @@ void temp_hum_sensor_task_run(){
 	);
 	
 	//Sensors start measuring
-	temp_hum_sensor_startMeasure()
+	temp_hum_sensor_startMeasure();
 	
 	
 	if(hih8120_isReady()){
