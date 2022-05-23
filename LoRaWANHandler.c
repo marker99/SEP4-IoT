@@ -138,7 +138,6 @@ void send_measurment(measurment_t *newMeasurment){
 	
 	// send to loraWan using loraWan drivers
 	printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, &_uplink_payload)));
-	
 }
 
 

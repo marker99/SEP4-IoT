@@ -19,6 +19,4 @@ typedef struct measurment
 } measurment_t ;
 
 
-
-
 #endif /* INCFILE1_H_ */
