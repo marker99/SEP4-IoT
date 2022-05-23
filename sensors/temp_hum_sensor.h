@@ -25,6 +25,8 @@ void temp_hum_sensor_task_handler(void *pvParameters);
 
 void temp_hum_sensor_task_init();
 
+static void temp_hum_sensor_startMeasure();
+
 void temp_hum_sensor_task_run();
 
 int16_t temp_hum_getTemperature(void);

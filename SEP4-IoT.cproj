@@ -159,7 +159,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ApplicaitonConfig.h">
+    <Compile Include="ApplicationConfig.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="application.c">
