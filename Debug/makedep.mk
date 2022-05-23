@@ -2,6 +2,8 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+application.c
+
 sensors\co2_sensor.c
 
 sensors\temp_hum_sensor.c

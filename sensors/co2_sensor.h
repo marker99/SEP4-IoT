@@ -29,5 +29,6 @@ void _co2_sensor_task_init();
 
 void _co2_sensor_task_run();
 
+uint16_t co2_sensor_getCO2();
 
 #endif /* co2_sensor_H_ */

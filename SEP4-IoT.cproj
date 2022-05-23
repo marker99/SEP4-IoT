@@ -159,7 +159,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ApplicaitonConfig.h">
+    <Compile Include="application_config.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="application.c">
@@ -217,6 +217,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\twi.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="loraWan_up_link_handler.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sensors\co2_sensor.h">

@@ -39,11 +39,13 @@ SUBDIRS :=  \
 ../FreeRTOS/Example/ \
 ../FreeRTOS/FreeRTOSTraceDriver/ \
 ../FreeRTOS/src/ \
+../datastructures \
 ../sensors
 
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../application.c \
 ../sensors/co2_sensor.c \
 ../sensors/temp_hum_sensor.c \
 ../FreeRTOS/FreeRTOSTraceDriver/FreeRTOSTraceDriver.c \
@@ -68,6 +70,7 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+application.o \
 sensors/co2_sensor.o \
 sensors/temp_hum_sensor.o \
 FreeRTOS/FreeRTOSTraceDriver/FreeRTOSTraceDriver.o \
@@ -85,6 +88,7 @@ LoRaWANHandler.o \
 main.o
 
 OBJS_AS_ARGS +=  \
+application.o \
 sensors/co2_sensor.o \
 sensors/temp_hum_sensor.o \
 FreeRTOS/FreeRTOSTraceDriver/FreeRTOSTraceDriver.o \
@@ -102,6 +106,7 @@ LoRaWANHandler.o \
 main.o
 
 C_DEPS +=  \
+application.d \
 sensors/co2_sensor.d \
 sensors/temp_hum_sensor.d \
 FreeRTOS/FreeRTOSTraceDriver/FreeRTOSTraceDriver.d \
@@ -119,6 +124,7 @@ LoRaWANHandler.d \
 main.d
 
 C_DEPS_AS_ARGS +=  \
+application.d \
 sensors/co2_sensor.d \
 sensors/temp_hum_sensor.d \
 FreeRTOS/FreeRTOSTraceDriver/FreeRTOSTraceDriver.d \
@@ -149,6 +155,13 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+./application.o: .././application.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)E:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000L  -I"E:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include" -I"../drivers" -I"../FreeRTOS/src"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega2560 -B "E:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega2560" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 sensors/co2_sensor.o: ../sensors/co2_sensor.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0

@@ -14,9 +14,9 @@
 // when 0000 0000 0000 0000 0000 0001 is set the measuring is started
 // Temp/hum sensor sets 0000 0000 0000 0000 0000 0010 when done measuring
 // Co2 sets 0000 0000 0000 0000 0000 0100 when done measuring.
-#define BIT_START_MEASURE(1<<0);
-#define BIT_TEMPHUM_READY_MEASURE(1<<1);
-#define BIT_CO2_READY_MEASURE(1<<2);
+#define BIT_START_MEASURE (1<<0)
+#define BIT_TEMPHUM_READY_MEASURE (1<<1)
+#define BIT_CO2_READY_MEASURE (1<<2)
 
 
 #endif /* APPLICAITONCONFIG_H_ */
