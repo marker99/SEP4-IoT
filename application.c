@@ -38,9 +38,7 @@ void application_initialize(UBaseType_t task_priority, EventGroupHandle_t readyG
 
 
 void application_task_handler(void *pvParameters){
-	printf("The Application task has started");
-	xLastWakeTime = xTaskGetTickCount();
-
+	
 	application_task_init();
 	
 	for (;;){
@@ -50,27 +48,32 @@ void application_task_handler(void *pvParameters){
 }
 
 void application_task_init(){
-	
-	
+	printf("The Application task has started\n");
+	xLastWakeTime = xTaskGetTickCount();
 }
 
 
 void application_task_run(){
 	
 	xTaskDelayUntil(&xLastWakeTime, xFrequency);
-	
+	printf("Start measurment\n");
 	start_measuring();
+	printf("Waiting for sensors to set ready event group\n");
+	
+	wait_for_co2_measurment();
+	printf("Application: Co2 measurment is ready\n");
+	
 	
 	wait_for_temp_hum_measurment();
-	wait_for_co2_measurment();
+	printf("Application: TempHum measurement is ready\n");
 	
 	//might lead to memory leak if not destroyed ?
 	measurment_t measurment;
-	
+	printf("Get measured data");
 	measurment.humidity = temp_hum_getTemperature();
 	measurment.tempratur = temp_hum_getHumidity();
 	measurment.co2_ppm = co2_sensor_getCO2();
-	
+	printf("Send measurment !");
 	send_measurment(&measurment);
 	
 }
@@ -88,7 +91,7 @@ static void wait_for_temp_hum_measurment(){
 	xEventGroupWaitBits(
 	_dataReadyEventGroup, 
 	BIT_TEMPHUM_READY_MEASURE, 
-	pdFALSE, 
+	pdTRUE, 
 	pdTRUE, 
 	portMAX_DELAY
 	);
@@ -98,7 +101,7 @@ static void wait_for_co2_measurment(){
 	xEventGroupWaitBits(
 	_dataReadyEventGroup,
 	BIT_CO2_READY_MEASURE,
-	pdFALSE,
+	pdTRUE,
 	pdTRUE,
 	portMAX_DELAY
 	);

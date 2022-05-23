@@ -37,17 +37,19 @@ void _co2_sensor_callback(uint16_t *ppm)
 {
 	measuredCO2 = *ppm;
 	xEventGroupSetBits(_dataReadyEventGroup, BIT_CO2_READY_MEASURE);
+	printf("Co2 callback: measurment is done\n");
 }
 
 void _co2_sensor_task_init(){
-	
+	printf("Co2 Sensor ready\n");
+	xLastWakeTime = xTaskGetTickCount();
 }
 
 void _co2_sensor_task_run(){
 	
 	xEventGroupWaitBits(_measureEventGroup,
-	BIT_START_MEASURE,
-	pdFALSE,
+	BIT_START_CO2_MEASURE,
+	pdTRUE,
 	pdTRUE,
 	portMAX_DELAY);
 	
@@ -57,21 +59,16 @@ void _co2_sensor_task_run(){
 }
 
 void CO2_wakeupAndMeasure(){
+	printf("co2 sensor started measuring\n");
 	xTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(50));
 	
 	mh_z19_returnCode_t returnCode;
 	
 	if(MHZ19_OK != (returnCode = mh_z19_takeMeassuring())){
-		printf("CO2 sensor failed to measure.");
+		printf("CO2 sensor failed to measure.\n");
 	}
 	
 	xTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(50));
-	
-	if(MHZ19_OK != (returnCode = mh_z19_getCo2Ppm(measuredCO2))){
-		printf("CO2 sensor failed to get the CO2 value.");
-	}
-	
-	xTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(10));
 }
 
 

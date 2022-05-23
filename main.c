@@ -34,8 +34,8 @@ void initialiseSystem()
 	status_leds_initialise(5); // Priority 5 for internal task
 	// Initialize the LoRaWAN driver without down-link buffer
 	lora_driver_initialise(1, NULL);
-	// Create LoRaWAN task and start it up with priority 3
-	lora_handler_initialise(2);
+
+	lora_handler_initialise(1);
 
 	// initialize Display drivers
 	display_7seg_initialise(NULL);
@@ -49,7 +49,6 @@ void initialiseSystem()
 	application_initialize(1, readyGroup, startGroup);
 	temp_hum_sensor_initialize(1, readyGroup, startGroup);
 	co2_sensor_initialize(1, readyGroup, startGroup);
-	
 }
 
 

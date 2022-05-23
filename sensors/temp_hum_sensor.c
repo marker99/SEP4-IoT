@@ -41,16 +41,20 @@ void temp_hum_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t re
 
 
 void temp_hum_sensor_task_init(){
-	
+	printf("hum_Sensor Sensor ready\n");
+	xLastWakeTime =  xTaskGetTickCount();
 }
 
 
 static void temp_hum_sensor_startMeasure(){
+	printf("temp hum sensor started measuring\n");
 	
 	xTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(50));
 	
 	if (HIH8120_OK != hih8120_wakeup()){
 		printf("temp/hum did not wake up\n");
+	}else{
+		printf("hih8120 woke up\n");
 	}
 	
 	xTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(100));
@@ -58,9 +62,11 @@ static void temp_hum_sensor_startMeasure(){
 	
 	if (HIH8120_OK != hih8120_measure()){
 		printf("the measurement went wrong\n");
+	}else{
+		printf("hih8120 started a measurement \n");
 	}
 	
-	xTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(100));
+	xTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(500));
 }
 
 
@@ -68,17 +74,19 @@ void temp_hum_sensor_task_run(){
 	
 	
 	xEventGroupWaitBits(_measureEventGroup,
-	BIT_TEMPHUM_READY_MEASURE,
-	pdFALSE,
+	BIT_START_TEMPHUM_MEASURE,
+	pdTRUE,
 	pdTRUE,
 	portMAX_DELAY
 	);
+	
 	
 	//Sensors start measuring
 	temp_hum_sensor_startMeasure();
 	
 	
 	if(hih8120_isReady()){
+		printf("Temp hum measurment is ready !\n");
 		measuredTemperature = hih8120_getTemperature_x10();
 		measuredHumidity = hih8120_getHumidityPercent_x10();
 		
@@ -86,7 +94,6 @@ void temp_hum_sensor_task_run(){
 		xEventGroupSetBits(_dataReadyEventGroup, BIT_TEMPHUM_READY_MEASURE);
 	}
 	
-	//xTaskDelayUntil(&xLastWakeTime, xFrequency);
 }
 
 
