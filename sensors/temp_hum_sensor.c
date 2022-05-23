@@ -13,7 +13,7 @@ static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 
 static TickType_t xLastWakeTime;
-const TickType_t xFrequency = pdMS_TO_TICKS(60000);
+static TickType_t xFrequency = pdMS_TO_TICKS(60000);
 
 
 static int16_t measuredTemperature;
@@ -86,8 +86,8 @@ void temp_hum_sensor_task_run(){
 		xEventGroupSetBits(_dataReadyEventGroup, BIT_TEMPHUM_READY_MEASURE);
 	}
 	
-	xTaskDelayUntil(&xLastWakeTime, xFrequency);
-	}
+	//xTaskDelayUntil(&xLastWakeTime, xFrequency);
+}
 
 
 int16_t temp_hum_getTemperature(void){

@@ -10,7 +10,6 @@
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
-
 #include <stdio_driver.h>
 #include <serial.h>
 
@@ -50,7 +49,6 @@ void initialiseSystem()
 	application_initialize(1, readyGroup, startGroup);
 	temp_hum_sensor_initialize(1, readyGroup, startGroup);
 	co2_sensor_initialize(1, readyGroup, startGroup);
-	
 	
 }
 

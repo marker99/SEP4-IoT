@@ -63,13 +63,16 @@ void application_task_run(){
 	
 	wait_for_temp_hum_measurment();
 	wait_for_co2_measurment();
-	measurment_t measurment ;
+	
+	//might lead to memory leak if not destroyed ?
+	measurment_t measurment;
 	
 	measurment.humidity = temp_hum_getTemperature();
 	measurment.tempratur = temp_hum_getHumidity();
 	measurment.co2_ppm = co2_sensor_getCO2();
 	
 	send_measurment(&measurment);
+	
 }
 
 
