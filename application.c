@@ -10,36 +10,27 @@
 #include <semphr.h>
 #include <event_groups.h>
 
+static EventGroupHandle_t _dataReadyEventGroup;
+static EventGroupHandle_t _measureEventGroup;
 
-typedef struct application_task{
+application_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t startGroup){
 	
-	EventGroupHandle_t data_ready_event_group;
-	EventGroupHandle_t measure_event_group;
+	_dataReadyEventGroup = readyGroup;
+	_measureEventGroup = startGroup;
 	
-
-} application_task_t;
-
-
-
-application_task_t application_task_initialize(UBaseType_t task_priority){
-	
-	
-	
-
 	xTaskCreate(
 	 application_task,
 	 "Application",
 	 configMINIMAL_STACK_SIZE,
-	 (application_task_t) 1,
+	 NULL,
 	 task_priority,
 	 NULL
 	)
 }
 
 
-void application_task(application_task_t application){
+void application_task( ){
 	printf("The Application task has started")
-	application.data_ready_event_group->
 	
 	for (;;){	
 		

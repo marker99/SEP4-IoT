@@ -159,6 +159,18 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ApplicaitonConfig.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="application.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="application.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="datastructures\measurment.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\display_7seg.h">
       <SubType>compile</SubType>
     </Compile>
@@ -312,9 +324,6 @@
     <Compile Include="FreeRTOS\src\variantHooks.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="measurment.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="LoRaWANHandler.c">
       <SubType>compile</SubType>
     </Compile>
@@ -329,6 +338,7 @@
     <Folder Include="FreeRTOS\Example\" />
     <Folder Include="FreeRTOS\FreeRTOSTraceDriver\" />
     <Folder Include="FreeRTOS\src\" />
+    <Folder Include="datastructures" />
     <Folder Include="sensors" />
   </ItemGroup>
   <ItemGroup>

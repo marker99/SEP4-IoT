@@ -28,7 +28,6 @@ void co2_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGr
 	NULL, 
 	task_priority, 
 	NULL);
-	
 }
 
 void co2_sensor_taskHandler(void *pvParamerters)
@@ -45,7 +44,6 @@ void co2_sensor_taskHandler(void *pvParamerters)
 void _co2_sensor_callback(uint16_t ppm)
 {
 	// could set a variable, and/or set the "measurment event group" to done;
-	
 }
 
 void _co2_sensor_task_init(){
@@ -55,7 +53,7 @@ void _co2_sensor_task_init(){
 void _co2_sensor_task_run(){
 	
 		
-		
+	
 		/*
 		// replace with check on event group
 		if (xSemaphoreTake(xTask1Semaphore, portMAX_DELAY)){
@@ -66,7 +64,6 @@ void _co2_sensor_task_run(){
 			}
 		}*/
 		// remove when event group is implemented
-		
 }
 
 
