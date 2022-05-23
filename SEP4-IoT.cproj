@@ -160,6 +160,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="application_config.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="application.c">
       <SubType>compile</SubType>
     </Compile>
