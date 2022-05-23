@@ -11,6 +11,8 @@
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 
+static uint16_t measuredCO2;
+
 void co2_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t measureGroup)
 {
 	
@@ -43,6 +45,7 @@ void co2_sensor_taskHandler(void *pvParamerters)
 
 void _co2_sensor_callback(uint16_t ppm)
 {
+	*measuredCO2 = *ppm
 	// could set a variable, and/or set the "measurment event group" to done;
 }
 
@@ -66,4 +69,7 @@ void _co2_sensor_task_run(){
 		// remove when event group is implemented
 }
 
+uint16_t co2_sensor_getCO2(){
+	return measuredCO2
+}
 

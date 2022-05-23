@@ -19,15 +19,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 000034c0  00000000  00000000  00015166  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000069f8  00000000  00000000  00018626  2**0
+  8 .debug_line   00006a20  00000000  00000000  00018626  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00002618  00000000  00000000  0001f020  2**2
+  9 .debug_frame  00002618  00000000  00000000  0001f048  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000042ce  00000000  00000000  00021638  2**0
+ 10 .debug_str    000042ce  00000000  00000000  00021660  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000c56b  00000000  00000000  00025906  2**0
+ 11 .debug_loc    0000c56b  00000000  00000000  0002592e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000a20  00000000  00000000  00031e71  2**0
+ 12 .debug_ranges 00000a20  00000000  00000000  00031e99  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -7665,7 +7665,6 @@ void send_measurment(measurment_t *newMeasurment){
     34d2:	9f 93       	push	r25
     34d4:	8f 93       	push	r24
     34d6:	0e 94 de 2f 	call	0x5fbc	; 0x5fbc <printf>
-	
 }
     34da:	0f 90       	pop	r0
     34dc:	0f 90       	pop	r0

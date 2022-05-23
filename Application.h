@@ -9,14 +9,25 @@
 #ifndef APPLICATION_H_
 #define APPLICATION_H_
 
+#include <ATMEGA_FreeRTOS.h>
+#include <task.h>
+#include <semphr.h>
+#include <event_groups.h>
 
-application_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t startGroup);
 
-void applicaiton_task_handler(void *pvParameters);
+void application_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t startGroup);
 
-void applicaiton_task_init();
+void application_task_handler(void *pvParameters);
 
-void applicaiton_task_run();
+void application_task_init();
 
+void application_task_run();
+
+
+static void start_measuring();
+
+static void wait_for_temp_hum_measurment();
+
+static void wait_for_co2_measurment();
 
 #endif /* APPLICATION_H_ */
