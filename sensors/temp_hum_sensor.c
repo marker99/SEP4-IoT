@@ -13,7 +13,6 @@ static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 
 static TickType_t xLastWakeTime;
-static TickType_t xFrequency = pdMS_TO_TICKS(60000);
 
 
 static int16_t measuredTemperature;
@@ -98,11 +97,15 @@ void temp_hum_sensor_task_run(){
 
 
 int16_t temp_hum_getTemperature(void){
-	return measuredTemperature;
+	if(hih8120_isReady()){
+		return hih8120_getTemperature_x10();
+	}
 }
 
 uint16_t temp_hum_getHumidity(void){
-	return measuredHumidity;
+	if(hih8120_isReady()){
+		return hih8120_getHumidityPercent_x10();
+	}
 }
 
 void temp_hum_sensor_task_handler(void *pvParameters)
