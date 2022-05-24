@@ -14,6 +14,10 @@ static TickType_t xLastWakeTime;
 
 uint16_t measuredCO2;
 
+// declaration of private methods
+static void CO2_wakeupAndMeasure();
+
+
 
 void co2_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t measureGroup)
 {
@@ -58,20 +62,6 @@ void _co2_sensor_task_run(){
 	vTaskDelay(pdMS_TO_TICKS(50));
 }
 
-void CO2_wakeupAndMeasure(){
-	printf("co2 sensor started measuring\n");
-	vTaskDelay(pdMS_TO_TICKS(50));
-	
-	mh_z19_returnCode_t returnCode;
-	
-	if(MHZ19_OK != (returnCode = mh_z19_takeMeassuring())){
-		printf("CO2 sensor failed to measure.\n");
-	}
-	
-	vTaskDelay(pdMS_TO_TICKS(50));
-}
-
-
 uint16_t co2_sensor_getCO2(){
 	return measuredCO2;
 }
@@ -87,4 +77,22 @@ void co2_sensor_taskHandler(void *pvParamerters)
 		_co2_sensor_task_run();
 	}
 }
+
+
+
+static void CO2_wakeupAndMeasure(){
+	printf("co2 sensor started measuring\n");
+	vTaskDelay(pdMS_TO_TICKS(50));
+	
+	mh_z19_returnCode_t returnCode;
+	
+	if(MHZ19_OK != (returnCode = mh_z19_takeMeassuring())){
+		printf("CO2 sensor failed to measure.\n");
+	}
+	
+	vTaskDelay(pdMS_TO_TICKS(50));
+}
+
+
+
 

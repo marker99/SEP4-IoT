@@ -19,6 +19,11 @@ static TickType_t xFrequency = pdMS_TO_TICKS(60000);
 static int16_t measuredTemperature;
 static uint16_t measuredHumidity;
 
+// declaration of private methods
+static void temp_hum_sensor_startMeasure();
+
+
+
 void temp_hum_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t measureGroup)
 {
 	// Initialize temp/hum
