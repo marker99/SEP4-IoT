@@ -71,7 +71,7 @@ static void _lora_setup(void)
 	
 	do {
 		rc = lora_driver_join(LORA_OTAA);
-		printf("Join Network TriesLeft:%d >%s<\n", maxJoinTriesLeft, lora_driver_mapReturnCodeToText(rc));
+		printf("Join Network Tries Left:%d >%s<\n", maxJoinTriesLeft, lora_driver_mapReturnCodeToText(rc));
 
 		if ( rc != LORA_ACCEPTED)
 		{
@@ -92,7 +92,7 @@ static void _lora_setup(void)
 		// Connected to LoRaWAN :-)
 		// Make the green led steady
 		status_leds_ledOn(led_ST2); // OPTIONAL
-		printf("Lora wan accpeted!\n");
+		printf("Lora wan accepted!\n");
 	}
 }
 
@@ -124,7 +124,7 @@ void send_measurment(measurment_t *newMeasurment){
 	_uplink_payload.portNo = 2;
 	
 	//extract data from measurment
-	int16_t temp = newMeasurment->tempratur;
+	int16_t temp = newMeasurment->temperatur;
 	uint16_t hum = newMeasurment->humidity;
 	uint16_t co2_ppm = newMeasurment->co2_ppm;
 

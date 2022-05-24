@@ -12,7 +12,7 @@ typedef struct measurment* pMeasurment_t;
 
 typedef struct measurment
 {
-	int16_t tempratur;
+	int16_t temperatur;
 	uint16_t humidity;
 	uint16_t co2_ppm;
 	
