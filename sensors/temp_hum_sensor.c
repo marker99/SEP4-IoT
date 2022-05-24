@@ -14,10 +14,6 @@ static EventGroupHandle_t _measureEventGroup;
 
 static TickType_t xLastWakeTime;
 
-
-static int16_t measuredTemperature;
-static uint16_t measuredHumidity;
-
 // declaration of private methods
 static void temp_hum_sensor_startMeasure();
 
@@ -86,9 +82,6 @@ void temp_hum_sensor_task_run(){
 	
 	
 	if(hih8120_isReady()){
-
-		measuredTemperature = hih8120_getTemperature_x10();
-		measuredHumidity = hih8120_getHumidityPercent_x10();
 		// set the ready measurment bit in event group
 		xEventGroupSetBits(_dataReadyEventGroup, BIT_TEMPHUM_READY_MEASURE);
 	}
