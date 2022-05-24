@@ -56,7 +56,7 @@ void application_task_init(){
 void application_task_run(){
 	
 	xTaskDelayUntil(&xLastWakeTime, xFrequency);
-	printf("Start measurment\n");
+	printf("\nStart measurment\n");
 	start_measuring();
 	printf("Waiting for sensors to set ready event group\n");
 	
@@ -69,12 +69,12 @@ void application_task_run(){
 	
 	//might lead to memory leak if not destroyed ?
 	pMeasurment_t newMeasurment = pvPortMalloc(sizeof(measurment_t));
-	
-	newMeasurment->tempratur = temp_hum_getTemperature();
+
+	newMeasurment->temperatur = temp_hum_getTemperature();
 	newMeasurment->humidity = temp_hum_getHumidity();
 	newMeasurment->co2_ppm = co2_sensor_getCO2();
 	
-	printf("Temp: %d , Hum: %d, co2: %d \n", newMeasurment->tempratur,newMeasurment->humidity,newMeasurment->co2_ppm);
+	printf("Temp: %d , Hum: %d, co2: %d \n", newMeasurment->temperatur,newMeasurment->humidity,newMeasurment->co2_ppm);
 	
 	vTaskDelay(100);
 	printf("Send measurment !\n");
