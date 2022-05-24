@@ -167,6 +167,9 @@
     <Compile Include="application.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="datastructures\measurment.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="datastructures\measurment.h">
       <SubType>compile</SubType>
     </Compile>

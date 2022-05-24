@@ -12,13 +12,13 @@
 #include "sensors/co2_sensor.h"
 #include "loraWan_up_link_handler.h"
 #include "datastructures/measurment.h"
-
+#include <stdlib.h>
 
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 
 static TickType_t xLastWakeTime;
-const TickType_t xFrequency = pdMS_TO_TICKS(30000);
+const TickType_t xFrequency = pdMS_TO_TICKS(300000);
 
 
 void application_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t startGroup){
@@ -68,14 +68,22 @@ void application_task_run(){
 	printf("Application: TempHum measurement is ready\n");
 	
 	//might lead to memory leak if not destroyed ?
-	measurment_t measurment;
-	printf("Get measured data");
-	measurment.humidity = temp_hum_getTemperature();
-	measurment.tempratur = temp_hum_getHumidity();
-	measurment.co2_ppm = co2_sensor_getCO2();
-	printf("Send measurment !");
-	send_measurment(&measurment);
+	pMeasurment_t newMeasurment = pvPortMalloc(sizeof(measurment_t));
 	
+
+	
+	newMeasurment->tempratur = temp_hum_getTemperature();
+	newMeasurment->humidity = temp_hum_getHumidity();
+	newMeasurment->co2_ppm = co2_sensor_getCO2();
+	
+	printf("Temp: %d , Hum: %d, co2: %d \n", newMeasurment->tempratur,newMeasurment->humidity,newMeasurment->co2_ppm);
+	
+	vTaskDelay(100);
+	printf("Send measurment !\n");
+	
+	vTaskDelay(100);
+	send_measurment(newMeasurment);
+	vPortFree(newMeasurment);
 }
 
 

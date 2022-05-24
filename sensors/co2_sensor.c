@@ -11,7 +11,8 @@
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 static TickType_t xLastWakeTime;
-static uint16_t measuredCO2;
+
+uint16_t measuredCO2;
 
 
 void co2_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t measureGroup)
@@ -33,11 +34,10 @@ void co2_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGr
 	NULL);
 }
 
-void _co2_sensor_callback(uint16_t *ppm)
+void _co2_sensor_callback(uint16_t ppm)
 {
-	measuredCO2 = *ppm;
+	measuredCO2 = ppm;
 	xEventGroupSetBits(_dataReadyEventGroup, BIT_CO2_READY_MEASURE);
-	printf("Co2 callback: measurment is done\n");
 }
 
 void _co2_sensor_task_init(){
@@ -55,12 +55,12 @@ void _co2_sensor_task_run(){
 	
 	CO2_wakeupAndMeasure();
 	
-	xTaskDelayUntil( &xLastWakeTime, pdMS_TO_TICKS(50));
+	vTaskDelay(pdMS_TO_TICKS(50));
 }
 
 void CO2_wakeupAndMeasure(){
 	printf("co2 sensor started measuring\n");
-	xTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(50));
+	vTaskDelay(pdMS_TO_TICKS(50));
 	
 	mh_z19_returnCode_t returnCode;
 	
@@ -68,7 +68,7 @@ void CO2_wakeupAndMeasure(){
 		printf("CO2 sensor failed to measure.\n");
 	}
 	
-	xTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(50));
+	vTaskDelay(pdMS_TO_TICKS(50));
 }
 
 
