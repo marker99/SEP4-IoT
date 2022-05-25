@@ -7,7 +7,7 @@
 
 #include "temp_hum_sensor.h"
 #include "../application_config.h"
-
+#include <status_leds.h>
 
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
@@ -22,21 +22,23 @@ static void temp_hum_sensor_startMeasure();
 void temp_hum_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t measureGroup)
 {
 	// Initialize temp/hum
-	if ( HIH8120_OK != hih8120_initialise() )
+	if ( HIH8120_OK == hih8120_initialise() )
 	{
-		printf("failed initializing temp/hum \n");
+		_dataReadyEventGroup = readyGroup;
+		_measureEventGroup = measureGroup;
+
+		xTaskCreate(
+		temp_hum_sensor_task_handler,
+		"Temp/humSensorTask",
+		configMINIMAL_STACK_SIZE,
+		NULL,
+		task_priority,
+		NULL);
+		
+		status_leds_ledOn(led_ST3);
 	}
 	
-	_dataReadyEventGroup = readyGroup;
-	_measureEventGroup = measureGroup;
-
-	xTaskCreate(
-	temp_hum_sensor_task_handler,
-	"Temp/humSensorTask",
-	configMINIMAL_STACK_SIZE,
-	NULL,
-	task_priority,
-	NULL);
+	printf("failed initializing temp/hum \n");
 }
 
 
@@ -48,6 +50,8 @@ void temp_hum_sensor_task_init(){
 
 static void temp_hum_sensor_startMeasure(){
 	printf("temp hum sensor started measuring\n");
+	status_leds_fastBlink(led_ST3);
+	
 	
 	vTaskDelay(pdMS_TO_TICKS(50));
 	
@@ -62,7 +66,6 @@ static void temp_hum_sensor_startMeasure(){
 	}
 	
 	vTaskDelay(pdMS_TO_TICKS(50));
-	
 }
 
 
@@ -83,6 +86,7 @@ void temp_hum_sensor_task_run(){
 	
 	if(hih8120_isReady()){
 		// set the ready measurment bit in event group
+		status_leds_ledOn(led_ST3);
 		xEventGroupSetBits(_dataReadyEventGroup, BIT_TEMPHUM_READY_MEASURE);
 	}
 	
@@ -99,6 +103,7 @@ uint16_t temp_hum_getHumidity(void){
 	if(hih8120_isReady()){
 		return hih8120_getHumidityPercent_x10();
 	}
+	return 0;
 }
 
 void temp_hum_sensor_task_handler(void *pvParameters)

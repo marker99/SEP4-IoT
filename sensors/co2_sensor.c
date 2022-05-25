@@ -7,7 +7,7 @@
 
 #include "co2_sensor.h"
 #include "../application_config.h"
-
+#include <status_leds.h>
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 static TickType_t xLastWakeTime;
@@ -36,11 +36,14 @@ void co2_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGr
 	NULL, 
 	task_priority, 
 	NULL);
+	
+	status_leds_ledOn(led_ST4);
 }
 
 void _co2_sensor_callback(uint16_t ppm)
 {
 	measuredCO2 = ppm;
+	status_leds_ledOn(led_ST4);
 	xEventGroupSetBits(_dataReadyEventGroup, BIT_CO2_READY_MEASURE);
 }
 
@@ -82,7 +85,9 @@ void co2_sensor_taskHandler(void *pvParamerters)
 
 static void CO2_wakeupAndMeasure(){
 	printf("co2 sensor started measuring\n");
+	status_leds_fastBlink(led_ST4);
 	vTaskDelay(pdMS_TO_TICKS(50));
+	
 	
 	mh_z19_returnCode_t returnCode;
 	

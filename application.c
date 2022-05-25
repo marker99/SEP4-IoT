@@ -43,7 +43,7 @@ void application_task_handler(void *pvParameters){
 	
 	for (;;){
 		application_task_run();
-	
+		
 	}
 }
 
@@ -70,11 +70,12 @@ void application_task_run(){
 	//might lead to memory leak if not destroyed ?
 	pMeasurment_t newMeasurment = pvPortMalloc(sizeof(measurment_t));
 
-	newMeasurment->temperatur = temp_hum_getTemperature();
-	newMeasurment->humidity = temp_hum_getHumidity();
-	newMeasurment->co2_ppm = co2_sensor_getCO2();
-	
-	printf("Temp: %d , Hum: %d, co2: %d \n", newMeasurment->temperatur,newMeasurment->humidity,newMeasurment->co2_ppm);
+	if (!newMeasurment == NULL){
+		newMeasurment->temperatur = temp_hum_getTemperature();
+		newMeasurment->humidity = temp_hum_getHumidity();
+		newMeasurment->co2_ppm = co2_sensor_getCO2();
+		printf("Temp: %d , Hum: %d, co2: %d \n", newMeasurment->temperatur,newMeasurment->humidity,newMeasurment->co2_ppm);
+	}
 	
 	vTaskDelay(100);
 	printf("Send measurment !\n");
@@ -82,6 +83,7 @@ void application_task_run(){
 	vTaskDelay(100);
 	send_measurment(newMeasurment);
 	vPortFree(newMeasurment);
+	
 }
 
 
@@ -95,10 +97,10 @@ static void start_measuring(){
 
 static void wait_for_temp_hum_measurment(){
 	xEventGroupWaitBits(
-	_dataReadyEventGroup, 
-	BIT_TEMPHUM_READY_MEASURE, 
-	pdTRUE, 
-	pdTRUE, 
+	_dataReadyEventGroup,
+	BIT_TEMPHUM_READY_MEASURE,
+	pdTRUE,
+	pdTRUE,
 	portMAX_DELAY
 	);
 }
