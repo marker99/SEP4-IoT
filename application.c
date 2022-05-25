@@ -70,7 +70,7 @@ void application_task_run(){
 	//might lead to memory leak if not destroyed ?
 	pMeasurment_t newMeasurment = pvPortMalloc(sizeof(measurment_t));
 
-	if (!newMeasurment == NULL){
+	if (newMeasurment != NULL){
 		newMeasurment->temperatur = temp_hum_getTemperature();
 		newMeasurment->humidity = temp_hum_getHumidity();
 		newMeasurment->co2_ppm = co2_sensor_getCO2();
