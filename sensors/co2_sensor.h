@@ -1,20 +1,22 @@
 /*
- * co2_sensor.h
- *
- * Created: 12-05-2022 07:10:04
- *  Author: sande
- */ 
-// freeRtos include
+* co2_sensor.h
+*
+* Created: 12-05-2022 07:10:04
+*  Author: Sander
+*/
+
+// FreeRTOS Includes
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
 #include <event_groups.h>
 
-// IO includes
+// IO Includes
 #include <stdio.h>
 
-// drivers for sensors
+// Drivers for sensors
 #include <mh_z19.h>
+
 
 #ifndef co2_sensor_H_
 #define co2_sensor_H_

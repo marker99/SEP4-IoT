@@ -9,7 +9,7 @@
 #ifndef LORAWAN_DOWN_LINK_HANDLER_H_
 #define LORAWAN_DOWN_LINK_HANDLER_H_
 
-void loraWan_down_link_handler_initialize(UBaseType_t task_priority);
+void loraWan_down_link_handler_initialize(UBaseType_t taskPriority);
 
 void loraWan_down_link_handler_task_run(void);
 

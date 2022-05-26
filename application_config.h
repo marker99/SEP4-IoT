@@ -1,9 +1,9 @@
 /*
- * ApplicaitonConfig.h
- *
- * Created: 23-05-2022 11:02:01
- *  Author: Sander
- */ 
+* ApplicaitonConfig.h
+*
+* Created: 23-05-2022 11:02:01
+*  Author: Sander
+*/
 
 
 #ifndef APPLICAITONCONFIG_H_
@@ -19,7 +19,7 @@
 #define BIT_START_TEMPHUM_MEASURE (1<<0)
 #define BIT_START_CO2_MEASURE (1<<1)
 
-#define BIT_TEMPHUM_READY_MEASURE (1<<2)
+#define BIT_TEMP_HUM_READY_MEASURE (1<<2)
 #define BIT_CO2_READY_MEASURE (1<<3)
 
 

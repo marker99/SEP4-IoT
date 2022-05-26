@@ -1,10 +1,11 @@
 /*
- * temp_hum_sensor.h
- *
- * Created: 12-05-2022 07:28:46
- *  Author: sande
- */ 
-// freeRtos include
+* temp_hum_sensor.h
+*
+* Created: 12-05-2022 07:28:46
+*  Author: sander
+*/
+
+// FreeRTOS Includes
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
@@ -12,7 +13,8 @@
 
 // IO includes
 #include <stdio.h>
-// drivers for sensors
+
+// Drivers for sensors
 #include <hih8120.h>
 
 

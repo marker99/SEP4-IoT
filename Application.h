@@ -1,9 +1,9 @@
 /*
- * Application.h
- *
- * Created: 23-05-2022 10:51:33
- *  Author: Sander
- */ 
+* Application.h
+*
+* Created: 23-05-2022 10:51:33
+*  Author: Sander
+*/
 
 
 #ifndef APPLICATION_H_
