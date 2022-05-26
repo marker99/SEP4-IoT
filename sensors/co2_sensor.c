@@ -5,7 +5,7 @@
 *  Author: Sander
 */
 
-#define DEVICE = "MHZ19 [CO2]"
+#define DEVICE "MHZ19 [CO2]"
 
 // Includes
 #include "co2_sensor.h"

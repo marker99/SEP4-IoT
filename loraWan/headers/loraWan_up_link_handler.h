@@ -12,11 +12,11 @@
 #include <message_buffer.h>
 #include "measurment.h"
 
-void loraWan_uplink_handler_initialize(UBaseType_t task_priority, MessageBufferHandle_t uplink_message_buffer);
+void loraWan_up_link_handler_initialize(UBaseType_t task_priority, MessageBufferHandle_t uplink_message_buffer);
 
-void loraWan_uplink_handler_task_init();
+void loraWan_up_link_handler_task_init();
 
-void loraWan_uplink_handler_task_run();
+void loraWan_up_link_handler_task_run();
 
 void send_measurment(pMeasurment_t newMeasurment);
 

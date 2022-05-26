@@ -86,7 +86,7 @@ uint16_t configMutex_getCO2Threshold(){
 
 void configMutex_setTargetTemperature(int16_t tagetTemp){
     // Obtain Semaphore to ensure Write access is only allowed from here
-    if (xSemaphoreTake(semaphore, portMAX_DELAY) == pdTRUE){
+    if (xSemaphoreTake(semaphore, portMAX_DELAY)){
         _targetTemperature = tagetTemp;
     }
 
@@ -96,7 +96,7 @@ void configMutex_setTargetTemperature(int16_t tagetTemp){
 
 void configMutex_setTemperatureMargin(int16_t tempMargin){
     // Obtain Semaphore to ensure Write access is only allowed from here
-    if(xSemaphoreTake(semaphore, portMAX_DELAY) = pdTRUE){
+    if(xSemaphoreTake(semaphore, portMAX_DELAY)){
         _temperatureMargin = tempMargin;
     }
 
@@ -106,7 +106,7 @@ void configMutex_setTemperatureMargin(int16_t tempMargin){
 
 void configMutex_setHumidityThreshold(uint16_t humThreshold){
     // Obtain Semaphore to ensure Write access is only allowed from here
-    if(xSemaphoreTake(semaphore, portMAX_DELAY) = pdTRUE){
+    if(xSemaphoreTake(semaphore, portMAX_DELAY)){
         _humidityThreshold = humThreshold;
     }
     
@@ -116,7 +116,7 @@ void configMutex_setHumidityThreshold(uint16_t humThreshold){
 
 void configMutex_setCO2Threshold(uint16_t co2Threshold){
     // Obtain Semaphore to ensure Write access is only allowed from here
-    if (xSemaphoreTake(semaphore, portMAX_DELAY) = pdTRUE){
+    if (xSemaphoreTake(semaphore, portMAX_DELAY)){
         _co2Threshold = co2Threshold;
     }
     

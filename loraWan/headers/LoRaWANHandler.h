@@ -2,12 +2,13 @@
  * LoRaWANHandler.h
  *
  * Created: 26-05-2022 13:54:03
- *  Author: sande
+ *  Author: Sander
  */ 
 
 #pragma once
 
-#include "loraWan_uplink_handler.h"
+#include "loraWan_up_link_handler.h"
+#include "loraWan_down_link_handler.h"
 #include <message_buffer.h>
 
 

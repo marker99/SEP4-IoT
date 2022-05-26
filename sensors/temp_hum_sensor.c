@@ -5,7 +5,7 @@
 *  Author: Sander
 */
 
-#define DEVICE = "HIH8129 [Temperature & Humidity]"
+#define DEVICE "HIH8129 [Temperature & Humidity]"
 
 #include "temp_hum_sensor.h"
 #include "../application_config.h"

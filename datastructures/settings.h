@@ -9,6 +9,8 @@
 #ifndef SETTINGS_H_
 #define SETTINGS_H_
 
+typedef	struct settings* pSettings_t; 
+
 typedef struct settings
 {
 	int16_t temperatur_target;

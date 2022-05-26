@@ -32,10 +32,10 @@ void lora_handler_initialize(UBaseType_t lora_handler_task_priority)
     lorawan_handler_uplink_massage_Buffer = xMessageBufferCreate(sizeof(measurment_t));
     lorawan_handler_downlink_message_buffer = xMessageBufferCreate(sizeof(settings_t));
     
-    // Initialize Driver and UpLink Handler
+    // Initialize Driver, UpLink Handler and downlink handler
     lora_driver_initialise(lora_handler_task_priority, lorawan_handler_downlink_message_buffer);
-    loraWan_uplink_handler_initialize(lora_handler_task_priority, lorawan_handler_uplink_massage_Buffer);
-
+    loraWan_up_link_handler_initialize(lora_handler_task_priority, lorawan_handler_uplink_massage_Buffer);
+	loraWan_down_link_handler_initialize(lora_handler_task_priority, loraWan_down_link_handler_initialize);
 
     xTaskCreate(
     lora_handler_task
