@@ -12,12 +12,10 @@
 #include <semphr.h>
 #include <stdio_driver.h>
 #include <serial.h>
-
-// Needed for LoRaWAN
-#include <lora_driver.h>
 #include <status_leds.h>
 
 #include "application.h"
+#include "LoRaWANHandler.h"
 //data object
 #include "datastructures/measurment.h"
 
@@ -32,10 +30,9 @@ void initialiseSystem()
 	// vvvvvvvvvvvvvvvvv BELOW IS LoRaWAN initialisation vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 	// Status Leds driver
 	status_leds_initialise(5); // Priority 5 for internal task
-	// Initialize the LoRaWAN driver without down-link buffer
-	lora_driver_initialise(1, NULL);
-
-	lora_handler_initialise(1);
+	
+	// initialize lorawan 
+	lora_handler_initialize(1);
 
 	// initialize Display drivers
 	display_7seg_initialise(NULL);

@@ -6,30 +6,61 @@
 */
 #include <stddef.h>
 #include <stdio.h>
-#include "measurment.h"
 
 #include <ATMEGA_FreeRTOS.h>
-
+#include <message_buffer.h>
 #include <lora_driver.h>
 #include <status_leds.h>
+
+#include "LoRaWANHandler.h"
+#include "measurment.h"
+#include "settings.h"
+
 
 // Parameters for OTAA join - You have got these in a mail from IHA
 #define LORA_appEUI "E3F46724321C3AFF"
 #define LORA_appKEY "70392C359F1F97A044173202961DB664"
 
-void lora_handler_task( void *pvParameters );
+//private methodes
+static void _lora_setup(void);
 
-
-void lora_handler_initialise(UBaseType_t lora_handler_task_priority)
+void lora_handler_initialize(UBaseType_t lora_handler_task_priority)
 {
 	
+	lorawan_handler_uplink_massage_Buffer = xMessageBufferCreate(sizeof(measurment_t));
+	lorawan_handler_downlink_message_buffer = xMessageBufferCreate(sizeof(settings_t));
+	
+	lora_driver_initialise(lora_handler_task_priority, lorawan_handler_downlink_message_buffer);
+	loraWan_uplink_handler_initialize(lora_handler_task_priority, lorawan_handler_uplink_massage_Buffer);
+
+
 	xTaskCreate(
 	lora_handler_task
-	,  "LRHand"  // A name just for humans
-	,  configMINIMAL_STACK_SIZE+200  // This stack size can be checked & adjusted by reading the Stack Highwater
+	,  "LRHand"
+	,  configMINIMAL_STACK_SIZE
 	,  NULL
-	,  lora_handler_task_priority  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+	,  lora_handler_task_priority  
 	,  NULL );
+}
+
+/*-----------------------------------------------------------*/
+void lora_handler_task( void *pvParameters )
+{
+	// Hardware reset of LoRaWAN transceiver
+	lora_driver_resetRn2483(1);
+	vTaskDelay(2);
+	lora_driver_resetRn2483(0);
+	// Give it a chance to wakeup
+	vTaskDelay(150);
+	
+	lora_driver_flushBuffers(); // get rid of first version string from module after reset!
+
+	_lora_setup();
+	
+	for(;;)
+	{
+		taskYIELD();
+	}
 }
 
 static void _lora_setup(void)
@@ -93,27 +124,6 @@ static void _lora_setup(void)
 		printf("Lora wan accepted!\n");
 	}
 }
-
-/*-----------------------------------------------------------*/
-void lora_handler_task( void *pvParameters )
-{
-	// Hardware reset of LoRaWAN transceiver
-	lora_driver_resetRn2483(1);
-	vTaskDelay(2);
-	lora_driver_resetRn2483(0);
-	// Give it a chance to wakeup
-	vTaskDelay(150);
-	
-	lora_driver_flushBuffers(); // get rid of first version string from module after reset!
-
-	_lora_setup();
-	
-	for(;;)
-	{
-		taskYIELD();
-	}
-}
-
 
 
 
