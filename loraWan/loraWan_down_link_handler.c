@@ -17,7 +17,7 @@
 #include "settings.h"
 
 // Static Variables
-static TickType_t _xLastWakeTime;
+//static TickType_t _xLastWakeTime;
 static MessageBufferHandle_t _downLinkMessageBuffer;
 static pSettings_t _buffer_settings;
 
@@ -42,6 +42,7 @@ void loraWan_down_link_handler_task_run(void){
     
     // May need a Delay here
     
+	vTaskDelay(500);
     // Read the Data from the Message Buffer
     size_t received = xMessageBufferReceive(_downLinkMessageBuffer,
     _buffer_settings,

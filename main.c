@@ -66,7 +66,7 @@ int main(void)
     vTaskStartScheduler();
     
     // If reached, an Error has occurred in the vTaskStartScheduler
-    printf("The Application has somehow Crashed...\nPlease Close and Restart the Application (Ctrl + C to Close)...\n");
+    printf("The Application has somehow Crashed...\nPlease Close and Restart the Application...\n");
     while(1){};
 }
 

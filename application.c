@@ -19,7 +19,7 @@ static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 
 static TickType_t _xLastWakeTime;
-const TickType_t xFrequency = pdMS_TO_TICKS(300000);
+static const TickType_t xFrequency = pdMS_TO_TICKS(60000);
 
 
 // Declaration of private(static) functions
