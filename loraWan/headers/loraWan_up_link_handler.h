@@ -9,9 +9,8 @@
 #ifndef LORAWAN_UP_LINK_HANDLER_H_
 #define LORAWAN_UP_LINK_HANDLER_H_
 
-#include "datastructures/measurment.h"
+#include "measurment.h"
 
 void send_measurment(measurment_t *newMeasurment);
-
 
 #endif /* LORAWAN_UP_LINK_HANDLER_H_ */

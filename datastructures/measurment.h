@@ -8,6 +8,8 @@
 #ifndef MEASURMENT_H_
 #define MEASURMENT_H_
 
+#include <stdint.h>
+
 typedef struct measurment* pMeasurment_t;
 
 typedef struct measurment

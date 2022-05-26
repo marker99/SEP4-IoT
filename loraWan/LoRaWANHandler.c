@@ -6,7 +6,7 @@
 */
 #include <stddef.h>
 #include <stdio.h>
-#include "datastructures/measurment.h"
+#include "measurment.h"
 
 #include <ATMEGA_FreeRTOS.h>
 
@@ -19,7 +19,6 @@
 
 void lora_handler_task( void *pvParameters );
 
-static lora_driver_payload_t _uplink_payload;
 
 void lora_handler_initialise(UBaseType_t lora_handler_task_priority)
 {

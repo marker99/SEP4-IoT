@@ -4,11 +4,13 @@
  * Created: 25-05-2022 12:56:14
  *  Author: sande
  */ 
-#include "loraWan_up_link_handler.h"
+#include "headers/loraWan_up_link_handler.h"
 #include <ATMEGA_FreeRTOS.h>
 #include <message_buffer.h>
 #include <lora_driver.h>
+#include <stdio.h>
 
+static lora_driver_payload_t _uplink_payload;
 
 void loraWan_uplin_handler_initialize(){
 	

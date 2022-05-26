@@ -10,7 +10,7 @@
 
 #include "sensors/temp_hum_sensor.h"
 #include "sensors/co2_sensor.h"
-#include "loraWan_up_link_handler.h"
+#include "loraWan/headers/loraWan_up_link_handler.h"
 #include "datastructures/measurment.h"
 #include <stdlib.h>
 
