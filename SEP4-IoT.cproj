@@ -176,6 +176,9 @@
     <Compile Include="datastructures\measurment.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="datastructures\settings.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\display_7seg.h">
       <SubType>compile</SubType>
     </Compile>
@@ -224,13 +227,16 @@
     <Compile Include="drivers\twi.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="loraWan\headers\loraWan_up_link_handler.h">
+    <Compile Include="loraWan\headers\LoRaWANHandler.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="loraWan\headers\loraWan_uplink_handler.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="loraWan\LoRaWANHandler.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="loraWan\loraWan_up_link_handler.c">
+    <Compile Include="loraWan\loraWan_uplink_handler.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sensors\co2_sensor.h">

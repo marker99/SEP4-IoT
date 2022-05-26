@@ -10,8 +10,9 @@
 
 #include "sensors/temp_hum_sensor.h"
 #include "sensors/co2_sensor.h"
-#include "loraWan/headers/loraWan_up_link_handler.h"
+#include "loraWan/headers/loraWan_uplink_handler.h"
 #include "datastructures/measurment.h"
+#include "LoRaWANHandler.h"
 #include <stdlib.h>
 
 static EventGroupHandle_t _dataReadyEventGroup;
@@ -19,6 +20,12 @@ static EventGroupHandle_t _measureEventGroup;
 
 static TickType_t xLastWakeTime;
 const TickType_t xFrequency = pdMS_TO_TICKS(300000);
+
+
+// private methods 
+static void start_measuring();
+static void wait_for_temp_hum_measurment();
+static void wait_for_co2_measurment();
 
 
 void application_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t startGroup){
@@ -78,12 +85,9 @@ void application_task_run(){
 	}
 	
 	vTaskDelay(100);
-	printf("Send measurment !\n");
-	
+	xMessageBufferSend(lorawan_handler_uplink_massage_Buffer, &newMeasurment, sizeof(measurment_t),portMAX_DELAY);
 	vTaskDelay(100);
-	send_measurment(newMeasurment);
-	vPortFree(newMeasurment);
-	
+	vPortFree(newMeasurment); // TODO: might delete it before recived, huh ?
 }
 
 

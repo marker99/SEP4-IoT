@@ -24,10 +24,5 @@ void application_task_init();
 void application_task_run();
 
 
-static void start_measuring();
-
-static void wait_for_temp_hum_measurment();
-
-static void wait_for_co2_measurment();
 
 #endif /* APPLICATION_H_ */
