@@ -29,7 +29,7 @@ void loraWan_down_link_handler_initialize(UBaseType_t taskPriority, MessageBuffe
 	_buffer_settings = pvPortMalloc(sizeof(settings_t));
 	
     // Create the DownLink Handler Task
-    xTaskCreate(loraWan_down_link_handler_task_handler,
+    xTaskCreate(loraWan_down_link_handler_task,
     "down_link_handler_task",
     configMINIMAL_STACK_SIZE,
     NULL,
@@ -82,7 +82,7 @@ void loraWan_down_link_handler_task_run(void){
 }
 
 
-void loraWan_down_link_handler_task_handler(void *pvParameters){
+void loraWan_down_link_handler_task(void *pvParameters){
 
     for (;;)
     {

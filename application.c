@@ -6,7 +6,7 @@
 */
 
 #include "application.h"
-#include "application_config.h"
+#include "event_group_config.h"
 
 #include "sensors/temp_hum_sensor.h"
 #include "sensors/co2_sensor.h"
@@ -19,7 +19,7 @@ static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 
 static TickType_t _xLastWakeTime;
-static const TickType_t xFrequency = pdMS_TO_TICKS(60000);
+static const TickType_t xFrequency = pdMS_TO_TICKS(30000);
 
 
 // Declaration of private(static) functions
@@ -98,11 +98,13 @@ void application_task_run(){
     // Short Delay (Lets other tasks run in the meantime
     vTaskDelay(100);
     
+	uint8_t sizeToWrite = sizeof(measurment_t);
     // Copy the Measurement into the UpLink Message Buffer
-    xMessageBufferSend(lorawan_handler_uplink_message_Buffer, &newMeasurment, sizeof(measurment_t), portMAX_DELAY);
-    
-    // Short Delay (Lets other tasks run in the meantime)
-    vTaskDelay(100);
+    uint8_t writtenBytes = xMessageBufferSend(lorawan_handler_uplink_message_Buffer, (void *)newMeasurment, sizeToWrite, portMAX_DELAY);
+	
+    printf("\nwrite to up link buffer bytes: %d, size to write %d", writtenBytes, sizeToWrite);
+
+	vTaskDelay(100);
     
     // Free the New Measurement, so as to not cause Memory Leakage
     vPortFree(newMeasurment);

@@ -9,7 +9,7 @@
 
 // Includes
 #include "co2_sensor.h"
-#include "../application_config.h"
+#include "../event_group_config.h"
 #include <status_leds.h>
 
 // Static Variables
@@ -53,7 +53,7 @@ void _co2_sensor_callback(uint16_t ppm)
 }
 
 void _co2_sensor_task_init(){
-    printf("%s Sensor is Starting Up\n", DEVICE);
+    printf("+ %s\n", DEVICE);
     _xLastWakeTime = xTaskGetTickCount();
 }
 
@@ -91,10 +91,8 @@ void co2_sensor_taskHandler(void *pvParamerters)
 
 
 static void CO2_wakeupAndMeasure(){
-    printf("%s Sensor has started measuring\n", DEVICE);
-    status_leds_fastBlink(led_ST4);
-    vTaskDelay(pdMS_TO_TICKS(50));
-    
+	status_leds_fastBlink(led_ST4);
+    printf("%s Sensor has started measuring\n", DEVICE);    
     
     mh_z19_returnCode_t returnCode;
     

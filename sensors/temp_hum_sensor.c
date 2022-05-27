@@ -8,7 +8,7 @@
 #define DEVICE "HIH8129 [Temperature & Humidity]"
 
 #include "temp_hum_sensor.h"
-#include "../application_config.h"
+#include "../event_group_config.h"
 #include <status_leds.h>
 
 static EventGroupHandle_t _dataReadyEventGroup;
@@ -46,7 +46,7 @@ void temp_hum_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t re
 
 
 void temp_hum_sensor_task_init(){
-	printf("%s Sensor is Starting Up\n", DEVICE);
+	printf("+ %s\n", DEVICE);
 	_xLastWakeTime =  xTaskGetTickCount();
 }
 

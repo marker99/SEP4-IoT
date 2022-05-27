@@ -13,6 +13,6 @@ void loraWan_down_link_handler_initialize(UBaseType_t taskPriority, MessageBuffe
 
 void loraWan_down_link_handler_task_run(void);
 
-void loraWan_down_link_handler_task_handler(void *pvParameters);
+void loraWan_down_link_handler_task(void *pvParameters);
 
 #endif /* LORAWAN_DOWN_LINK_HANDLER_H_ */

@@ -18,7 +18,6 @@ void loraWan_up_link_handler_task_init();
 
 void loraWan_up_link_handler_task_run();
 
-void send_measurment(pMeasurment_t newMeasurment);
-
+void loraWan_up_link_handler_task(void *pvParameters);
 
 #endif /* LORAWAN_UP_LINK_HANDLER_H_ */
