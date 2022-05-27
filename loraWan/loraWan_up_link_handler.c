@@ -12,7 +12,7 @@
 
 static lora_driver_payload_t _uplink_payload;
 static MessageBufferHandle_t _uplink_message_buffer;
-static pMeasurment_t _measurment_data;
+static uint8_t _measurment_data[100];
 
 static TickType_t _xLastWakeTime;
 static const TickType_t xFrequency = pdMS_TO_TICKS(100000);
@@ -22,7 +22,8 @@ void loraWan_up_link_handler_initialize(UBaseType_t task_priority, MessageBuffer
 	
 	_uplink_message_buffer = uplink_message_buffer;
 	
-	_measurment_data = pvPortMalloc(sizeof(measurment_t));
+	//_measurment_data = (uint8_t *) pvPortMalloc(sizeof(measurment_t));
+	
 	
 	xTaskCreate(
 	loraWan_up_link_handler_task_run,
@@ -45,60 +46,57 @@ void loraWan_up_link_handler_task_run(){
 	
 	xTaskDelayUntil(&_xLastWakeTime, xFrequency);
 	
-	printf("Uplink: starting to read from buffer");
+	printf("\nUplink: starting to read from buffer\n");
 	
-	while(xMessageBufferIsEmpty(_uplink_message_buffer) == pdFALSE){	
+	//while(xMessageBufferIsEmpty(_uplink_message_buffer) == pdFALSE){
+	
+	int16_t recivedBytes = xMessageBufferReceive(_uplink_message_buffer, _measurment_data, sizeof(measurment_t), pdMS_TO_TICKS(10000));
+	
+	printf("\nRead from uplink buffer bytes: %d\n", recivedBytes);
+	
+	//if ( _measurment_data != NULL){
+		//printf("Data buffer was not null ");
+		//send_measurment(_data_buffer);
 		
-		int16_t recivedBytes = xMessageBufferReceive(_uplink_message_buffer, _measurment_data, sizeof(measurment_t), portMAX_DELAY);
-		
-		printf("Read from uplink buffer bytes: %d", recivedBytes);
-		
-		if ( _measurment_data != NULL){
-			printf("Data buffer was not null ");
-			//send_measurment(_data_buffer);
-			
-		}
-	}
-		
-
+		vTaskDelay(100);
 		
 }
 
-	void loraWan_uplink_handler_task(void *pvParameters){
+void loraWan_uplink_handler_task(void *pvParameters){
+	
+	loraWan_up_link_handler_task_init();
+	
+	
+	for(;;){
 		
-		loraWan_up_link_handler_task_init();
 		
-		
-		for(;;){
-			
-			
-			loraWan_up_link_handler_task_run();
-		}
-
+		loraWan_up_link_handler_task_run();
 	}
 
+}
 
-	void send_measurment(pMeasurment_t newMeasurment){
-		
-		//prepare payload
-		_uplink_payload.len = 6;
-		_uplink_payload.portNo = 2;
-		
-		//extract data from measurment
-		int16_t temp = newMeasurment->temperature;
-		uint16_t hum = newMeasurment->humidity;
-		uint16_t co2_ppm = newMeasurment->co2PartsPrMillion;
 
-		// format data into bytes (two for each value)
-		_uplink_payload.bytes[0] = temp >> 8;
-		_uplink_payload.bytes[1] = temp & 0xFF;
+void send_measurment(pMeasurment_t newMeasurment){
+	
+	//prepare payload
+	_uplink_payload.len = 6;
+	_uplink_payload.portNo = 2;
+	
+	//extract data from measurment
+	int16_t temp = newMeasurment->temperature;
+	uint16_t hum = newMeasurment->humidity;
+	uint16_t co2_ppm = newMeasurment->co2PartsPrMillion;
 
-		_uplink_payload.bytes[2] = hum >> 8;
-		_uplink_payload.bytes[3] = hum & 0xFF;
-		
-		_uplink_payload.bytes[4] = co2_ppm >> 8;
-		_uplink_payload.bytes[5] = co2_ppm & 0xFF;
-		
-		// send to loraWan using loraWan drivers
-		printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, &_uplink_payload)));
-	}
+	// format data into bytes (two for each value)
+	_uplink_payload.bytes[0] = temp >> 8;
+	_uplink_payload.bytes[1] = temp & 0xFF;
+
+	_uplink_payload.bytes[2] = hum >> 8;
+	_uplink_payload.bytes[3] = hum & 0xFF;
+	
+	_uplink_payload.bytes[4] = co2_ppm >> 8;
+	_uplink_payload.bytes[5] = co2_ppm & 0xFF;
+	
+	// send to loraWan using loraWan drivers
+	printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, &_uplink_payload)));
+}
