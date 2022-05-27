@@ -99,7 +99,7 @@ void application_task_run(){
     vTaskDelay(100);
     
     // Copy the Measurement into the UpLink Message Buffer
-    xMessageBufferSend(lorawan_handler_uplink_massage_Buffer, &newMeasurment, sizeof(measurment_t), portMAX_DELAY);
+    xMessageBufferSend(lorawan_handler_uplink_message_Buffer, &newMeasurment, sizeof(measurment_t), portMAX_DELAY);
     
     // Short Delay (Lets other tasks run in the meantime)
     vTaskDelay(100);
