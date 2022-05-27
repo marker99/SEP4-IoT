@@ -18,7 +18,8 @@ static TickType_t _xLastWakeTime;
 static const TickType_t xFrequency = pdMS_TO_TICKS(65000);
 
 // could be define in a config
-static uint8_t numberOfMeasurmentsSend = 3;
+//static uint8_t numberOfMeasurmentsSend = 3;
+#define NUMBER_OF_MEASUREMENTS_TO_SEND 3
 static uint8_t sizeOfPayLoadData;
 static uint8_t payLoadSlot = 0;
 
@@ -30,8 +31,12 @@ static void append_to_payload_data(pMeasurment_t);
 
 void loraWan_up_link_handler_initialize(UBaseType_t task_priority, MessageBufferHandle_t uplink_message_buffer){
 	
-	sizeOfPayLoadData = sizeof(measurment_t) * numberOfMeasurmentsSend;
+    printf("sizeof(measurement): %d, count(measurements): %d", sizeof(measurment_t), NUMBER_OF_MEASUREMENTS_TO_SEND)
+    
+	sizeOfPayLoadData = sizeof(measurment_t) * NUMBER_OF_MEASUREMENTS_TO_SEND;
 	
+    printf("payload data: %d", sizeOfPayLoadData)
+    
 	_uplink_message_buffer = uplink_message_buffer;
 	
 	_measurment_data = pvPortMalloc(sizeof(measurment_t));
@@ -100,18 +105,20 @@ static void prepare_uplink_payload(){
 static void append_to_payload_data(pMeasurment_t newMeasurment){
 	printf("Payload slot: %d", payLoadSlot);
 	
-	int16_t temp = newMeasurment->temperature;
+	uint16_t temp = newMeasurment->temperature;
 	uint16_t hum = newMeasurment->humidity;
 	uint16_t co2_ppm = newMeasurment->co2PartsPrMillion;
 	
-	_uplink_payload_p->bytes[payLoadSlot+0] = temp >> 8;
-	_uplink_payload_p->bytes[payLoadSlot+1] = temp & 0xFF;
+    // Right Shift 8 bits to get rid of the Lower Byte of the value
+	_uplink_payload_p->bytes[payLoadSlot + 0] = temp >> 8;
+    // And with 0xFF (1111 1111) to get rid of the Upper Byte of the value
+	_uplink_payload_p->bytes[payLoadSlot + 1] = temp & 0xFF;
 
-	_uplink_payload_p->bytes[payLoadSlot+2] = hum >> 8;
-	_uplink_payload_p->bytes[payLoadSlot+3] = hum & 0xFF;
+	_uplink_payload_p->bytes[payLoadSlot + 2] = hum >> 8;
+	_uplink_payload_p->bytes[payLoadSlot + 3] = hum & 0xFF;
 	
-	_uplink_payload_p->bytes[payLoadSlot+4] = co2_ppm >> 8;
-	_uplink_payload_p->bytes[payLoadSlot+5] = co2_ppm & 0xFF;
+	_uplink_payload_p->bytes[payLoadSlot + 4] = co2_ppm >> 8;
+	_uplink_payload_p->bytes[payLoadSlot + 5] = co2_ppm & 0xFF;
 	
 	payLoadSlot += sizeof(measurment_t);
 }
