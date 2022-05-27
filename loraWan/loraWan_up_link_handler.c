@@ -12,17 +12,17 @@
 
 static lora_driver_payload_t _uplink_payload;
 static MessageBufferHandle_t _uplink_message_buffer;
-static pMeasurment_t _data_buffer;
+static pMeasurment_t _measurment_data;
 
 static TickType_t _xLastWakeTime;
-static const TickType_t xFrequency = pdMS_TO_TICKS(300000);
+static const TickType_t xFrequency = pdMS_TO_TICKS(100000);
 
 
 void loraWan_up_link_handler_initialize(UBaseType_t task_priority, MessageBufferHandle_t uplink_message_buffer){
 	
 	_uplink_message_buffer = uplink_message_buffer;
 	
-	_data_buffer = pvPortMalloc(sizeof(measurment_t));
+	_measurment_data = pvPortMalloc(sizeof(measurment_t));
 	
 	xTaskCreate(
 	loraWan_up_link_handler_task_run,
@@ -42,15 +42,20 @@ void loraWan_up_link_handler_task_init(){
 }
 
 void loraWan_up_link_handler_task_run(){
+	
 	xTaskDelayUntil(&_xLastWakeTime, xFrequency);
 	
-	while(!xMessageBufferIsEmpty(_uplink_message_buffer)){	
+	printf("Uplink: starting to read from buffer");
+	
+	while(xMessageBufferIsEmpty(_uplink_message_buffer) == pdFALSE){	
 		
-		int16_t recivedBytes = xMessageBufferReceive(_uplink_message_buffer, _data_buffer, sizeof(measurment_t), portMAX_DELAY);
+		int16_t recivedBytes = xMessageBufferReceive(_uplink_message_buffer, _measurment_data, sizeof(measurment_t), portMAX_DELAY);
 		
-		if ( _data_buffer != NULL){
+		printf("Read from uplink buffer bytes: %d", recivedBytes);
+		
+		if ( _measurment_data != NULL){
 			printf("Data buffer was not null ");
-			send_measurment(_data_buffer);
+			//send_measurment(_data_buffer);
 			
 		}
 	}
