@@ -130,10 +130,6 @@
             <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\include\</Value>
             <Value>../drivers</Value>
             <Value>../FreeRTOS/src</Value>
-            <Value>../loraWan/headers</Value>
-            <Value>../datastructures</Value>
-            <Value>../sensors</Value>
-            <Value>..</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
         <avrgcc.compiler.optimization.level>Optimize debugging experience (-Og)</avrgcc.compiler.optimization.level>
@@ -162,9 +158,6 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="event_group_config.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="application.c">
       <SubType>compile</SubType>
     </Compile>
@@ -175,9 +168,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="configuration_settings.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="datastructures\measurment.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="datastructures\measurment.h">
@@ -252,16 +242,19 @@
     <Compile Include="loraWan\loraWan_up_link_handler.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="sensors\co2_sensor.h">
+    <Compile Include="sensors\co2_sensor.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="sensors\co2_sensor.c">
+    <Compile Include="sensors\headers\co2_sensor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sensors\headers\temp_hum_sensor.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sensors\temp_hum_sensor.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="sensors\temp_hum_sensor.h">
+    <Compile Include="sytem_config\event_group_config.h">
       <SubType>compile</SubType>
     </Compile>
     <None Include="FreeRTOS\Example\main.c">
@@ -369,9 +362,11 @@
     <Folder Include="FreeRTOS\FreeRTOSTraceDriver\" />
     <Folder Include="FreeRTOS\src\" />
     <Folder Include="datastructures" />
-    <Folder Include="loraWan" />
-    <Folder Include="loraWan\headers" />
+    <Folder Include="loraWan\" />
+    <Folder Include="loraWan\headers\" />
+    <Folder Include="sytem_config" />
     <Folder Include="sensors" />
+    <Folder Include="sensors\headers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="drivers\.git">
