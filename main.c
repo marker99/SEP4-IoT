@@ -41,6 +41,7 @@ void initialiseSystem()
 	
 	// Initialize the Application, along with the Sensors
 	application_initialize(1, readyGroup, startGroup);
+	window_controller_actuator_initlizer(3);
 	temp_hum_sensor_initialize(2, readyGroup, startGroup);
 	co2_sensor_initialize(2, readyGroup, startGroup);
 }

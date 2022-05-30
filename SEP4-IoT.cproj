@@ -164,6 +164,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="actuator\headers\window_controller.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="actuator\window_controller_actuator.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="application.c">
       <SubType>compile</SubType>
     </Compile>
@@ -370,6 +376,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="actuator\headers" />
     <Folder Include="drivers\" />
     <Folder Include="drivers\Example\" />
     <Folder Include="FreeRTOS\" />
@@ -379,6 +386,7 @@
     <Folder Include="datastructures" />
     <Folder Include="loraWan\" />
     <Folder Include="loraWan\headers\" />
+    <Folder Include="actuator" />
     <Folder Include="util" />
     <Folder Include="system_config" />
     <Folder Include="sensors" />

@@ -2,7 +2,8 @@
 * loraWan_down_link_handler.c
 *
 * Created: 26-05-2022 13:25:38
-*  Author: Frederik
+*  Author: Frederik, Sander
+* 
 */
 
 // FreeRTOS Includes
@@ -20,14 +21,14 @@
 // Static Variables
 //static TickType_t _xLastWakeTime;
 static MessageBufferHandle_t _downLinkMessageBuffer;
-static lora_driver_payload_t *_down_link_payload_buffer;
+static lora_driver_payload_t _down_link_payload_buffer;
 
 
 void loraWan_down_link_handler_initialize(UBaseType_t taskPriority, MessageBufferHandle_t downLinkBuffer){
     // Set Internal Message Buffer Variable to the initialised one
     _downLinkMessageBuffer = downLinkBuffer;
     
-	_down_link_payload_buffer = pvPortMalloc(sizeof(settings_t));
+	//_down_link_payload_buffer = pvPortMalloc(sizeof(lora_driver_payload_t));
 	
     // Create the DownLink Handler Task
     xTaskCreate(loraWan_down_link_handler_task,
@@ -40,30 +41,30 @@ void loraWan_down_link_handler_initialize(UBaseType_t taskPriority, MessageBuffe
 
 
 void loraWan_down_link_handler_task_run(void){
-    
+      thread_safe_printf("Downlink: running\n");
     // May need a Delay here
     
 	vTaskDelay(500);
     // Read the Data from the Message Buffer
     size_t received = xMessageBufferReceive(_downLinkMessageBuffer,
-    _down_link_payload_buffer,
-    sizeof(settings_t),
-    portMAX_DELAY);
+    (void*)&_down_link_payload_buffer,
+    sizeof(lora_driver_payload_t),
+    pdMS_TO_TICKS(60000));
     
     // Inform User the DownlinkBuffer has received Settings
     thread_safe_printf("DownlinkBuffer: Settings Received\n");
     
     // Ensure Byte count is correct
     if (received != sizeof(lora_driver_payload_t)) {
-        thread_safe_printf("Incorrect size of payload\n\tNeeded: %d | Got: %d", sizeof(lora_driver_payload_t), received);
+        thread_safe_printf("Incorrect size of payload\nNeeded: %d | Got: %d\n", sizeof(lora_driver_payload_t), received);
         return;
     }
 	
 	int i;
-	for (i = 0; i < sizeof(_down_link_payload_buffer->bytes); i++)
+	for (i = 0; i < sizeof(_down_link_payload_buffer.bytes); i++)
 	{
 		
-		thread_safe_printf("%s", _down_link_payload_buffer->bytes[i]);
+		thread_safe_printf("%s", _down_link_payload_buffer.bytes[i]);
 	}
 	thread_safe_printf("\n");
 	

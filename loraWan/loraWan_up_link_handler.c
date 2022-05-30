@@ -17,7 +17,6 @@
 static lora_driver_payload_t *_uplink_payload_p;
 
 static MessageBufferHandle_t _uplink_message_buffer;
-static measurment_t _measurment_data;
 
 static TickType_t _xLastWakeTime;
 static const TickType_t xFrequency = LORA_WAN_UPLINK_FREQUENCY;
@@ -57,9 +56,10 @@ void loraWan_up_link_handler_initialize(UBaseType_t task_priority, MessageBuffer
 
 
 void loraWan_up_link_handler_task_init(){
-	_xLastWakeTime = xTaskGetTickCount();
-	// shifting the upload interval to make sure all measurments are ready before sending. 
+	// shifting the upload interval to make sure all measurements are ready before sending. 
 	vTaskDelay(LORA_WAN_UP_LINK_TASK_START_OFFSET);
+	
+	_xLastWakeTime = xTaskGetTickCount();
 }
 
 void loraWan_up_link_handler_task_run(){
@@ -89,6 +89,7 @@ void loraWan_up_link_handler_task_run(){
 void loraWan_up_link_handler_task(void *pvParameters){
 	
 	loraWan_up_link_handler_task_init();
+
 	for(;;){
 		loraWan_up_link_handler_task_run();
 	}
@@ -130,7 +131,7 @@ void loraWan_up_link_handler_append_to_payload_data(pMeasurment_t newMeasurment)
 
 static void send_payload(){
 	// send to loraWan using loraWan drivers
-	thread_safe_printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, _uplink_payload_p)));
+	thread_safe_printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(true, _uplink_payload_p)));
 	payLoadSlot = 0;
 }
 
