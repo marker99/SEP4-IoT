@@ -59,8 +59,10 @@ void window_controller_actuator_task_run(){
 	if (_co2_threshold_exceeded() || _max_temperature_exceeded() || _humidity_threshold_exceeded() ){
 		thread_safe_printf(">Window Controller < : limit exceeded!\n");
 		_open_window();
-		
+	}else if (_min_temperature_exceeded() ){
+		_close_window();
 	}
+	
 		
 		
 	/*
@@ -76,7 +78,8 @@ void window_controller_actuator_task_run(){
 		thread_safe_printf(">Window Controller < : humidity limit exceeded!");
 		_open_window();
 	}*/
-	
+	UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
+	thread_safe_printf("\n>window controller end Stack Size %d\n", uxHighWaterMark);
 }
 
 

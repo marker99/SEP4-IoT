@@ -45,7 +45,7 @@ void lora_handler_initialize(UBaseType_t lora_handler_task_priority)
     xTaskCreate(
     lora_handler_task
     ,  "LRHand"
-    ,  configMINIMAL_STACK_SIZE+50
+    ,  configMINIMAL_STACK_SIZE+30
     ,  NULL
     ,  lora_handler_task_priority
     ,  NULL );
@@ -74,9 +74,7 @@ void lora_handler_task( void *pvParameters )
 
     // Yield to all other Tasks
 	
-	UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
-	thread_safe_printf("\n>dolink end Stack Size %d\n", uxHighWaterMark);
-	
+
     for(;;)
     {
         taskYIELD();

@@ -20,7 +20,6 @@ static TickType_t _xLastWakeTime;
 static void temp_hum_sensor_startMeasure();
 
 
-
 void temp_hum_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t readyGroup, EventGroupHandle_t measureGroup)
 {
 	// Initialize Temperature & Humidity Sensor

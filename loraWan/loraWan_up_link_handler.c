@@ -33,12 +33,8 @@ static void prepare_uplink_payload();
 
 void loraWan_up_link_handler_initialize(UBaseType_t task_priority, MessageBufferHandle_t uplink_message_buffer){
 	
-	printf("sizeof(measurement): %d, count(measurements): %d\n", 4, NUMBER_OF_MEASUREMENTS_TO_SEND);
-
 	sizeOfPayLoadData = 4 * NUMBER_OF_MEASUREMENTS_TO_SEND;
-	
-	printf("payload data: %d\n", sizeOfPayLoadData);
-	
+
 	// not used
 	_uplink_message_buffer = uplink_message_buffer;
 
@@ -102,8 +98,7 @@ static void prepare_uplink_payload(){
 	
 	_uplink_payload_p->portNo = 2;
 	_uplink_payload_p->len = sizeOfPayLoadData;
-	
-	printf("payload size: %d\n", sizeof(_uplink_payload_p->bytes));
+
 }
 
 

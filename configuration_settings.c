@@ -18,9 +18,9 @@ static SemaphoreHandle_t semaphore;
 
 void configMutex_create(){
 	semaphore = xSemaphoreCreateMutex();
-	_targetTemperature  = 22;
-	_temperatureMargin = 2;
-	_humidityThreshold = 60;
+	_targetTemperature  = 220;
+	_temperatureMargin = 20;
+	_humidityThreshold = 600;
 	_co2Threshold = 1000;
 }
 

@@ -97,8 +97,8 @@ void application_task_run(){
 	newMeasurment->co2PartsPrMillion = co2_sensor_getCO2();
 	
 	// Print for Debugging Purposes
-	//thread_safe_printf("> Application: Measurement <\nTemp: %d\nHum: %d\nco2: %d\n> Measurement <\n", 
-	//newMeasurment->temperature, newMeasurment->humidity, newMeasurment->co2PartsPrMillion);
+	thread_safe_printf("> Application: Measurement <\nTemp: %d\nHum: %d\nco2: %d\n> Measurement <\n", 
+	newMeasurment->temperature, newMeasurment->humidity, newMeasurment->co2PartsPrMillion);
 
 	loraWan_up_link_handler_append_to_payload_data(newMeasurment);	
 	
