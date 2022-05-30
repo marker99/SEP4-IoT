@@ -4,19 +4,16 @@
 * Modified by: Sander
 * Clarifying Comments: Andreas
 * Example main file including LoRaWAN setup
-* Just for inspiration :)
 */
-
-#include <stdio.h>
 
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
-#include <semphr.h>
-#include <stdio_driver.h>
+//#include <semphr.h>
 #include <serial.h>
 #include <status_leds.h>
-#include <rc_servo.h>
-
+#include <stdio.h>
+//#include <rc_servo.h>
+#include "util/thread_safe_printf.h"
 #include "application.h"
 #include "LoRaWANHandler.h"
 // Data Object
@@ -27,23 +24,16 @@ void initialiseSystem()
 	// Set output ports for LEDs
 	DDRA |= _BV(DDA0) | _BV(DDA7);
 	
-	// Make it possible to use STDIO on COM port 0 (USB) on Arduino board - Setting 57600, 8, N, 1
-	stdio_initialise(ser_USART0);
-
+	// thread safe stdio printf
+	thread_safe_printf_initialize();
+	
 	// vvvvvvvvvvvvvvvvv BELOW IS LoRaWAN initialization vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 	// Status LEDs driver
 	status_leds_initialise(5); // Priority 5 for internal task
 	
 	// Initialize LoRaWAN
 	lora_handler_initialize(1);
-/*
-should be removed as we dont use it 
-	// Initialize Display drivers
-	display_7seg_initialise(NULL);
 	
-	// Power up the display
-	display_7seg_powerUp();
-*/
 	// Initialize Event Groups [ Measurement ready | Start measuring ]
 	EventGroupHandle_t readyGroup = xEventGroupCreate();
 	EventGroupHandle_t startGroup = xEventGroupCreate();
@@ -68,7 +58,7 @@ int main(void)
 	vTaskStartScheduler();
 	
 	// If reached, an Error has occurred in the vTaskStartScheduler
-	printf("The Application has somehow Crashed...\nPlease Restart the Device...\n");
+	thread_safe_printf("The Application has somehow Crashed...\nPlease Restart the Device...\n");
 	while(1){};
 }
 

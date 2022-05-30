@@ -15,6 +15,7 @@
 #include "headers/loraWan_down_link_handler.h"
 #include "configuration_settings.h"
 #include "settings.h"
+#include "util/thread_safe_printf.h"
 
 // Static Variables
 //static TickType_t _xLastWakeTime;
@@ -50,11 +51,11 @@ void loraWan_down_link_handler_task_run(void){
     portMAX_DELAY);
     
     // Inform User the DownlinkBuffer has received Settings
-    printf("DownlinkBuffer: Settings Received\n");
+    thread_safe_printf("DownlinkBuffer: Settings Received\n");
     
     // Ensure Byte count is correct
     if (received != 5) {
-        printf("Incorrect size of Settings\n\tNeeded: %d | Got: %d", 5, received);
+        thread_safe_printf("Incorrect size of Settings\n\tNeeded: %d | Got: %d", 5, received);
         return;
     }
     /*

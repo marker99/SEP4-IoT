@@ -10,8 +10,9 @@
 // Includes
 #include "co2_sensor.h"
 #include "event_group_config.h"
+#include <timers.h>
 #include <status_leds.h>
-
+#include "util/thread_safe_printf.h"
 // Static Variables
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
@@ -53,7 +54,7 @@ void _co2_sensor_callback(uint16_t ppm)
 }
 
 void _co2_sensor_task_init(){
-    printf("+ %s\n", DEVICE);
+    thread_safe_printf("+ %s\n", DEVICE);
     _xLastWakeTime = xTaskGetTickCount();
 }
 
@@ -66,9 +67,7 @@ void _co2_sensor_task_run(){
     
     //Sensors start measuring
     CO2_wakeupAndMeasure();
-    
-    // Small Delay
-    vTaskDelay(pdMS_TO_TICKS(50));
+   
 }
 
 uint16_t co2_sensor_getCO2(){
@@ -92,15 +91,14 @@ void co2_sensor_taskHandler(void *pvParamerters)
 
 static void CO2_wakeupAndMeasure(){
 	status_leds_fastBlink(led_ST4);
-    printf("%s Sensor has started measuring\n", DEVICE);    
+    thread_safe_printf("%s Sensor has started measuring\n", DEVICE);
     
     mh_z19_returnCode_t returnCode;
     
     if(MHZ19_OK != (returnCode = mh_z19_takeMeassuring())){
-        printf("%s Sensor failed to measure\n", DEVICE);
+        thread_safe_printf("%s Sensor failed to measure\n", DEVICE);
     }
     
-    vTaskDelay(pdMS_TO_TICKS(50));
 }
 
 

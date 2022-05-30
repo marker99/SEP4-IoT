@@ -10,7 +10,7 @@
 #include "temp_hum_sensor.h"
 #include "event_group_config.h"
 #include <status_leds.h>
-
+#include "util/thread_safe_printf.h"
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 
@@ -46,14 +46,14 @@ void temp_hum_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t re
 
 
 void temp_hum_sensor_task_init(){
-	printf("+ %s\n", DEVICE);
+	thread_safe_printf("+ %s\n", DEVICE);
 	_xLastWakeTime =  xTaskGetTickCount();
 }
 
 
 static void temp_hum_sensor_startMeasure(){
 	// Inform User a Measurement is starting
-	printf("%s Sensor started measuring\n", DEVICE);
+	thread_safe_printf("%s Sensor started measuring\n", DEVICE);
 	status_leds_fastBlink(led_ST3);
 	
 	// Small Delay
@@ -61,7 +61,7 @@ static void temp_hum_sensor_startMeasure(){
 	
 	// Check if Sensor is able to Wake Up
 	if (HIH8120_OK != hih8120_wakeup()){
-		printf("%s did not wake up\n", DEVICE);
+		thread_safe_printf("%s did not wake up\n", DEVICE);
 	}
 	
 	// Small Delay
@@ -69,7 +69,7 @@ static void temp_hum_sensor_startMeasure(){
 
 	// Check if a Measurement could be taken
 	if (HIH8120_OK != hih8120_measure()){
-		printf("%s measurement went wrong\n", DEVICE);
+		thread_safe_printf("%s measurement went wrong\n", DEVICE);
 	}
 	
 	// Small Delay
