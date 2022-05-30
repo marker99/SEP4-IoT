@@ -27,6 +27,9 @@ void initialiseSystem()
 	// thread safe stdio printf
 	thread_safe_printf_initialize();
 	
+	//create config settings mutex
+	configMutex_create();
+	
 	// vvvvvvvvvvvvvvvvv BELOW IS LoRaWAN initialization vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 	// Status LEDs driver
 	status_leds_initialise(5); // Priority 5 for internal task

@@ -18,5 +18,7 @@ void window_controller_actuator_task_run();
 
 void window_controller_actuator_task(void *pvParameters);
 
-
+void window_controller_actuator_task_init();
+	
+	
 #endif /* WINDOW_CONTROLLER_H_ */

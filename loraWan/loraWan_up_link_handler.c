@@ -81,9 +81,7 @@ void loraWan_up_link_handler_task_run(){
 	_measurment_data->temperature = 25;
 	*/
 
-	
 	send_payload();
-	
 }
 
 void loraWan_up_link_handler_task(void *pvParameters){
