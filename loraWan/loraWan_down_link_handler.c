@@ -20,14 +20,14 @@
 // Static Variables
 //static TickType_t _xLastWakeTime;
 static MessageBufferHandle_t _downLinkMessageBuffer;
-static pSettings_t _buffer_settings;
+static lora_driver_payload_t *_down_link_payload_buffer;
 
 
 void loraWan_down_link_handler_initialize(UBaseType_t taskPriority, MessageBufferHandle_t downLinkBuffer){
     // Set Internal Message Buffer Variable to the initialised one
     _downLinkMessageBuffer = downLinkBuffer;
     
-	_buffer_settings = pvPortMalloc(sizeof(settings_t));
+	_down_link_payload_buffer = pvPortMalloc(sizeof(settings_t));
 	
     // Create the DownLink Handler Task
     xTaskCreate(loraWan_down_link_handler_task,
@@ -46,7 +46,7 @@ void loraWan_down_link_handler_task_run(void){
 	vTaskDelay(500);
     // Read the Data from the Message Buffer
     size_t received = xMessageBufferReceive(_downLinkMessageBuffer,
-    _buffer_settings,
+    _down_link_payload_buffer,
     sizeof(settings_t),
     portMAX_DELAY);
     
@@ -54,17 +54,27 @@ void loraWan_down_link_handler_task_run(void){
     thread_safe_printf("DownlinkBuffer: Settings Received\n");
     
     // Ensure Byte count is correct
-    if (received != 5) {
-        thread_safe_printf("Incorrect size of Settings\n\tNeeded: %d | Got: %d", 5, received);
+    if (received != sizeof(lora_driver_payload_t)) {
+        thread_safe_printf("Incorrect size of payload\n\tNeeded: %d | Got: %d", sizeof(lora_driver_payload_t), received);
         return;
     }
+	
+	int i;
+	for (i = 0; i < sizeof(_down_link_payload_buffer->bytes); i++)
+	{
+		
+		thread_safe_printf("%s", _down_link_payload_buffer->bytes[i]);
+	}
+	thread_safe_printf("\n");
+	
+	
     /*
     // Reading all raw data bytes
     int16_t temperature_target = _buffer_settings.bytes[0];                       // First Byte
     int16_t temperature_margin = _buffer_settings.bytes[1];                       // Second Byte
     uint16_t humidity_threshold =  _buffer_settings.bytes[2];                     // Third Byte
     uint16_t co2_threshold =  _buffer_settings.bytes[3] << 8 | _buffer_settings.bytes[4];  // Fourth and Fifth Byte
-    */
+    
 	
 	int16_t temperature_target = _buffer_settings->temperatur_target;                     // First Byte
 	int16_t temperature_margin = _buffer_settings->temperatur_margin;                       // Second Byte
@@ -79,7 +89,7 @@ void loraWan_down_link_handler_task_run(void){
     configMutex_setTargetTemperature(temperature_target);
     configMutex_setTemperatureMargin(temperature_margin);
     configMutex_setHumidityThreshold(humidity_threshold);
-    configMutex_setCO2Threshold(co2_threshold);
+    configMutex_setCO2Threshold(co2_threshold);*/
 }
 
 
