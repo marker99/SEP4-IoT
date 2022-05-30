@@ -14,13 +14,13 @@
 #include "datastructures/measurment.h"
 #include "LoRaWANHandler.h"
 #include <stdlib.h>
+#include "time_interval_config.h"
 
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
-#define _application_max_delay  pdMS_TO_TICKS(20000)
 
 static TickType_t _xLastWakeTime;
-static const TickType_t xFrequency = _application_max_delay;
+static const TickType_t xFrequency = APPLICATION_MEASURMENT_FREQUENCY;
 
 
 // Declaration of private(static) functions
@@ -84,11 +84,8 @@ void application_task_run(){
 	thread_safe_printf("> Application: TempHum measurement is ready\n");
 	
 	// Initialize a New Measurement
-	// pMeasurment_t newMeasurment = pvPortMalloc(sizeof(measurment_t));
 	measurment_t newMeasurment;
 
-	// Ensuring the Measurement is created before attempting to fill it with Data
-	// if (newMeasurment != NULL){
 	// Saving Temperature Measurement
 	newMeasurment.temperature = temp_hum_getTemperature();
 	// Saving Humidity Measurement
@@ -99,21 +96,9 @@ void application_task_run(){
 	// Print for Debugging Purposes
 	thread_safe_printf("> Application: Measurement <\nTemp: %d\nHum: %d\nco2: %d\n> Measurement <\n", 
 	newMeasurment.temperature, newMeasurment.humidity, newMeasurment.co2PartsPrMillion);
-	// }
-	
-	// Short Delay (Lets other tasks run in the meantime
-	//vTaskDelay(100);
-	
-	loraWan_up_link_handler_append_to_payload_data(&newMeasurment);
-	
-	//uint8_t sizeToWrite = sizeof(measurment_t);
-	// Copy the Measurement into the UpLink Message Buffer
-	// uint8_t writtenBytes = xMessageBufferSend(lorawan_handler_uplink_message_Buffer, (void *)&newMeasurment, sizeToWrite, _application_max_delay);
-	
-	//thread_safe_printf("\n Application: write to up link buffer bytes: %d, size to write %d", writtenBytes, sizeToWrite);
 
-	// Free the New Measurement, so as to not cause Memory Leakage
-	//vPortFree(newMeasurment);
+	loraWan_up_link_handler_append_to_payload_data(&newMeasurment);
+
 }
 
 
@@ -130,7 +115,7 @@ static void wait_for_temp_hum_measurment(){
 	BIT_TEMP_HUM_READY_MEASURE,
 	pdTRUE,
 	pdTRUE,
-	_application_max_delay
+	APPLICATION_MAX_DELAY
 	);
 }
 
@@ -140,7 +125,7 @@ static void wait_for_co2_measurment(){
 	BIT_CO2_READY_MEASURE,
 	pdTRUE,
 	pdTRUE,
-	_application_max_delay
+	APPLICATION_MAX_DELAY
 	);
 }
 
