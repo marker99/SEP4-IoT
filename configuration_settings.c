@@ -6,7 +6,7 @@
 */
 
 #include <stdint.h>
-#include "ATMEGA_FreeRTOS.h"
+#include <ATMEGA_FreeRTOS.h>
 #include <semphr.h>
 
 static int16_t _targetTemperature;

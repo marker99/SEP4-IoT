@@ -22,6 +22,8 @@ static EventGroupHandle_t _measureEventGroup;
 static TickType_t _xLastWakeTime;
 static const TickType_t xFrequency = APPLICATION_MEASURMENT_FREQUENCY;
 
+static measurment_t *newMeasurment;
+
 
 // Declaration of private(static) functions
 static void start_measuring();
@@ -34,6 +36,8 @@ void application_initialize(UBaseType_t task_priority, EventGroupHandle_t readyG
 	_dataReadyEventGroup = readyGroup;
 	_measureEventGroup = startGroup;
 	
+	newMeasurment = pvPortMalloc(sizeof(measurment_t));
+
 	// Create the Tasks which runs the entire Application
 	xTaskCreate(
 	application_task_handler,
@@ -64,40 +68,40 @@ void application_task_init(){
 
 
 void application_task_run(){
+	
 	// Waiting Timer on Awake
 	xTaskDelayUntil(&_xLastWakeTime, xFrequency);
-	thread_safe_printf("\n> Starting a measurment\n");
+	//thread_safe_printf("\n> Starting a measurment\n");
 	
 	// Start the Measurement Sensors
 	start_measuring();
-	thread_safe_printf("> Application: Waiting for sensors to set ready event group\n");
+	//thread_safe_printf("> Application: Waiting for sensors to set ready event group\n");
 	
 	// small delay to wait for measurement
 	vTaskDelay(pdMS_TO_TICKS(200));
 	
 	// Wait for CO2 Sensor to become Ready
 	wait_for_co2_measurment();
-	thread_safe_printf("> Application: Co2 measurment is ready\n");
+	//thread_safe_printf("> Application: Co2 measurment is ready\n");
 	
 	// Wait for Temperature and Humidity Sensor to become Ready
 	wait_for_temp_hum_measurment();
-	thread_safe_printf("> Application: TempHum measurement is ready\n");
+	//thread_safe_printf("> Application: TempHum measurement is ready\n");
 	
-	// Initialize a New Measurement
-	measurment_t newMeasurment;
 
 	// Saving Temperature Measurement
-	newMeasurment.temperature = temp_hum_getTemperature();
+	newMeasurment->temperature = temp_hum_getTemperature();
 	// Saving Humidity Measurement
-	newMeasurment.humidity = temp_hum_getHumidity();
+	newMeasurment->humidity = temp_hum_getHumidity();
 	// Saving CO2 Measurement
-	newMeasurment.co2PartsPrMillion = co2_sensor_getCO2();
+	newMeasurment->co2PartsPrMillion = co2_sensor_getCO2();
 	
 	// Print for Debugging Purposes
-	thread_safe_printf("> Application: Measurement <\nTemp: %d\nHum: %d\nco2: %d\n> Measurement <\n", 
-	newMeasurment.temperature, newMeasurment.humidity, newMeasurment.co2PartsPrMillion);
+	//thread_safe_printf("> Application: Measurement <\nTemp: %d\nHum: %d\nco2: %d\n> Measurement <\n", 
+	//newMeasurment->temperature, newMeasurment->humidity, newMeasurment->co2PartsPrMillion);
 
-	loraWan_up_link_handler_append_to_payload_data(&newMeasurment);
+	loraWan_up_link_handler_append_to_payload_data(newMeasurment);	
+	
 
 }
 

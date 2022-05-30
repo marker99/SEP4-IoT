@@ -47,7 +47,7 @@ void loraWan_up_link_handler_initialize(UBaseType_t task_priority, MessageBuffer
 	xTaskCreate(
 	loraWan_up_link_handler_task,
 	"LoraWanUplinkHandler",
-	configMINIMAL_STACK_SIZE,
+	configMINIMAL_STACK_SIZE-40,
 	NULL,
 	task_priority,
 	NULL);
@@ -82,6 +82,8 @@ void loraWan_up_link_handler_task_run(){
 	*/
 
 	send_payload();
+	UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
+	thread_safe_printf("\n>uplink end Stack Size %d\n", uxHighWaterMark);
 }
 
 void loraWan_up_link_handler_task(void *pvParameters){

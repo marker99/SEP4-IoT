@@ -38,7 +38,7 @@ void temp_hum_sensor_initialize(UBaseType_t task_priority, EventGroupHandle_t re
 		NULL);
 		
 		status_leds_ledOn(led_ST3);
-	}else{
+		}else{
 		
 		printf("Failed to Initialize %s Sensor\n", DEVICE);
 	}
@@ -95,6 +95,7 @@ void temp_hum_sensor_task_run(){
 		status_leds_ledOn(led_ST3);
 		xEventGroupSetBits(_dataReadyEventGroup, BIT_TEMP_HUM_READY_MEASURE);
 	}
+
 }
 
 /*

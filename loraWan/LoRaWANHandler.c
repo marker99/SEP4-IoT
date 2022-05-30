@@ -24,6 +24,9 @@
 #define LORA_APP_EUI "E3F46724321C3AFF"
 #define LORA_APP_KEY "70392C359F1F97A044173202961DB664"
 
+static MessageBufferHandle_t lorawan_handler_uplink_message_Buffer;
+static MessageBufferHandle_t lorawan_handler_downlink_message_buffer;
+
 // Declaration of private functions
 static void _lora_setup(void);
 
@@ -31,7 +34,7 @@ void lora_handler_initialize(UBaseType_t lora_handler_task_priority)
 {
     // Initialize Message Buffers
     lorawan_handler_uplink_message_Buffer = xMessageBufferCreate((10 * sizeof(measurment_t)));
-    lorawan_handler_downlink_message_buffer = xMessageBufferCreate((10 * sizeof(settings_t)));
+    lorawan_handler_downlink_message_buffer = xMessageBufferCreate((3 * sizeof(lora_driver_payload_t)));
     
     // Initialize Driver, UpLink Handler and downlink handler
     lora_driver_initialise(lora_handler_task_priority, lorawan_handler_downlink_message_buffer);
@@ -42,7 +45,7 @@ void lora_handler_initialize(UBaseType_t lora_handler_task_priority)
     xTaskCreate(
     lora_handler_task
     ,  "LRHand"
-    ,  configMINIMAL_STACK_SIZE+200
+    ,  configMINIMAL_STACK_SIZE+50
     ,  NULL
     ,  lora_handler_task_priority
     ,  NULL );
@@ -68,8 +71,12 @@ void lora_handler_task( void *pvParameters )
 
     // Sets up the LoRaWAN
     _lora_setup();
-    
+
     // Yield to all other Tasks
+	
+	UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
+	thread_safe_printf("\n>dolink end Stack Size %d\n", uxHighWaterMark);
+	
     for(;;)
     {
         taskYIELD();
@@ -86,27 +93,22 @@ static void _lora_setup(void)
     // Factory reset the transceiver
     thread_safe_printf("FactoryReset >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_rn2483FactoryReset()));
     
-    // Configure to EU868 LoRaWAN standards
-    thread_safe_printf("Configure to EU868 >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_configureToEu868()));
+	lora_driver_configureToEu868();
 
     // Get the transceivers HW EUI
     rc = lora_driver_getRn2483Hweui(_out_buf);
-    thread_safe_printf("Get HWEUI >%s<: %s\n", lora_driver_mapReturnCodeToText(rc), _out_buf);
+	
+    lora_driver_mapReturnCodeToText(rc);
 
-    // Set the HWEUI as DevEUI in the LoRaWAN software stack in the transceiver
-    thread_safe_printf("Set DevEUI: %s >%s<\n", _out_buf, lora_driver_mapReturnCodeToText(lora_driver_setDeviceIdentifier(_out_buf)));
+    lora_driver_setDeviceIdentifier(_out_buf);
 
-    // Set Over The Air Activation parameters to be ready to join the LoRaWAN
-    thread_safe_printf("Set OTAA Identity appEUI:%s appKEY:%s devEUI:%s >%s<\n", LORA_APP_EUI, LORA_APP_KEY, _out_buf, lora_driver_mapReturnCodeToText(lora_driver_setOtaaIdentity(LORA_APP_EUI,LORA_APP_KEY,_out_buf)));
+    lora_driver_setOtaaIdentity(LORA_APP_EUI,LORA_APP_KEY,_out_buf);
 
-    // Save all the MAC settings in the transceiver
-    thread_safe_printf("Save mac >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_saveMac()));
+	lora_driver_saveMac();
 
-    // Enable Adaptive Data Rate
-    thread_safe_printf("Set Adaptive Data Rate: ON >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_setAdaptiveDataRate(LORA_ON)));
+    lora_driver_setAdaptiveDataRate(LORA_ON);
 
-    // Set receiver window1 delay to 500 ms - this is needed if down-link messages will be used
-    thread_safe_printf("Set Receiver Delay: %d ms >%s<\n", 1000, lora_driver_mapReturnCodeToText(lora_driver_setReceiveDelay(1000)));
+	lora_driver_setReceiveDelay(500);
 
     // Join the LoRaWAN
     uint8_t maxJoinTriesLeft = 10;

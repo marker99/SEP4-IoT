@@ -4,21 +4,21 @@
 * Created: 30-05-2022 19:12:32
 *  Author: Sander
 */
+#include <ATMEGA_FreeRTOS.h>
+#include <rc_servo.h>
+#include <stdbool.h>
+#include <task.h>
 
 #include "headers/window_controller.h"
 #include "configuration_settings.h"
 #include "time_interval_config.h"
 #include "temp_hum_sensor.h"
 #include "co2_sensor.h"
+#include "util/thread_safe_printf.h"
 
-#include <rc_servo.h>
-
-#include <ATMEGA_FreeRTOS.h>
-#include <task.h>
 
 static TickType_t _xLastWakeTime;
 static const TickType_t xFrequency = WINDOW_CONTROLLER_REQUENCY;
-
 
 
 static bool _window_is_closed;
@@ -36,14 +36,15 @@ void window_controller_actuator_initlizer(UBaseType_t taskPriority){
 	rc_servo_initialise();
 	
 	xTaskCreate(window_controller_actuator_task,
-	"Window controller task",
-	configMINIMAL_STACK_SIZE,
+	"WindowControllerTask",
+	configMINIMAL_STACK_SIZE+200,
 	NULL,
 	taskPriority,
 	NULL);
 }
 
 void window_controller_actuator_task_init(){
+	
 	vTaskDelay(WINDOW_CONTROLLER_TASK_START_OFFSET);
 
 	_xLastWakeTime = xTaskGetTickCount();
@@ -52,13 +53,17 @@ void window_controller_actuator_task_init(){
 
 void window_controller_actuator_task_run(){
 	xTaskDelayUntil(&_xLastWakeTime, xFrequency);
-	thread_safe_printf(">Window Controller < : check indoor climate!");
+	thread_safe_printf("\n>Window Controller < : check indoor climate!\n");
 	
-	if (_co2_threshold_exceeded()){
-		thread_safe_printf(">Window Controller < : co2 limit exceeded!");
+	
+	if (_co2_threshold_exceeded() || _max_temperature_exceeded() || _humidity_threshold_exceeded() ){
+		thread_safe_printf(">Window Controller < : limit exceeded!\n");
 		_open_window();
 		
 	}
+		
+		
+	/*
 	else if (_max_temperature_exceeded()){
 		thread_safe_printf(">Window Controller < : max temperatur limit exceeded!");
 		_open_window();
@@ -70,7 +75,7 @@ void window_controller_actuator_task_run(){
 	else if (_humidity_threshold_exceeded()){
 		thread_safe_printf(">Window Controller < : humidity limit exceeded!");
 		_open_window();
-	}
+	}*/
 	
 }
 
@@ -104,13 +109,11 @@ static bool _min_temperature_exceeded(){
 
 
 static void _close_window(){
-	thread_safe_printf("\n>window controller< : Closing window!\n");
 	rc_servo_setPosition( SERVO_NO, -100);
 	_window_is_closed = 1;
 }
 
 static void _open_window(){
-	thread_safe_printf("\n>window controller< : Opening window!\n");
 	rc_servo_setPosition( SERVO_NO, 100);
 	_window_is_closed = 0;
 }

@@ -16,6 +16,12 @@
 #include "util/thread_safe_printf.h"
 #include "application.h"
 #include "LoRaWANHandler.h"
+#include "sensors/headers/temp_hum_sensor.h"
+#include "sensors/headers/co2_sensor.h"
+#include "actuator/headers/window_controller.h"
+#include "configuration_settings.h"
+#include "loraWan/headers/LoRaWANHandler.h"
+
 // Data Object
 #include "datastructures/measurment.h"
 
@@ -41,10 +47,10 @@ void initialiseSystem()
 	EventGroupHandle_t readyGroup = xEventGroupCreate();
 	EventGroupHandle_t startGroup = xEventGroupCreate();
 
-	
+
 	// Initialize the Application, along with the Sensors
+	window_controller_actuator_initlizer(2);
 	application_initialize(1, readyGroup, startGroup);
-	window_controller_actuator_initlizer(3);
 	temp_hum_sensor_initialize(2, readyGroup, startGroup);
 	co2_sensor_initialize(2, readyGroup, startGroup);
 }

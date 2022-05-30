@@ -51,9 +51,7 @@ void loraWan_down_link_handler_task_run(void){
     sizeof(lora_driver_payload_t),
     pdMS_TO_TICKS(60000));
     
-    // Inform User the DownlinkBuffer has received Settings
-    thread_safe_printf("DownlinkBuffer: Settings Received\n");
-    
+
     // Ensure Byte count is correct
     if (received != sizeof(lora_driver_payload_t)) {
         thread_safe_printf("Incorrect size of payload\nNeeded: %d | Got: %d\n", sizeof(lora_driver_payload_t), received);
@@ -91,6 +89,7 @@ void loraWan_down_link_handler_task_run(void){
     configMutex_setTemperatureMargin(temperature_margin);
     configMutex_setHumidityThreshold(humidity_threshold);
     configMutex_setCO2Threshold(co2_threshold);*/
+	
 }
 
 
