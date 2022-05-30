@@ -8,7 +8,7 @@
 #define DEVICE "HIH8129 [Temperature & Humidity]"
 
 #include "temp_hum_sensor.h"
-#include "../event_group_config.h"
+#include "event_group_config.h"
 #include <status_leds.h>
 
 static EventGroupHandle_t _dataReadyEventGroup;

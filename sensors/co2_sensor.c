@@ -9,7 +9,7 @@
 
 // Includes
 #include "co2_sensor.h"
-#include "../event_group_config.h"
+#include "event_group_config.h"
 #include <status_leds.h>
 
 // Static Variables

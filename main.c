@@ -29,7 +29,6 @@ void initialiseSystem()
 	
 	// Make it possible to use STDIO on COM port 0 (USB) on Arduino board - Setting 57600, 8, N, 1
 	stdio_initialise(ser_USART0);
-	// Maybe sei() ? for global interrupts
 
 	// vvvvvvvvvvvvvvvvv BELOW IS LoRaWAN initialization vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 	// Status LEDs driver
@@ -37,22 +36,23 @@ void initialiseSystem()
 	
 	// Initialize LoRaWAN
 	lora_handler_initialize(1);
-
+/*
+should be removed as we dont use it 
 	// Initialize Display drivers
 	display_7seg_initialise(NULL);
 	
 	// Power up the display
 	display_7seg_powerUp();
-
-	// Initialize Event Groups [ Ready | Start ]
+*/
+	// Initialize Event Groups [ Measurement ready | Start measuring ]
 	EventGroupHandle_t readyGroup = xEventGroupCreate();
 	EventGroupHandle_t startGroup = xEventGroupCreate();
 
 	
 	// Initialize the Application, along with the Sensors
 	application_initialize(1, readyGroup, startGroup);
-	temp_hum_sensor_initialize(1, readyGroup, startGroup);
-	co2_sensor_initialize(1, readyGroup, startGroup);
+	temp_hum_sensor_initialize(2, readyGroup, startGroup);
+	co2_sensor_initialize(2, readyGroup, startGroup);
 }
 
 
@@ -68,7 +68,7 @@ int main(void)
 	vTaskStartScheduler();
 	
 	// If reached, an Error has occurred in the vTaskStartScheduler
-	printf("The Application has somehow Crashed...\nPlease Close and Restart the Application...\n");
+	printf("The Application has somehow Crashed...\nPlease Restart the Device...\n");
 	while(1){};
 }
 

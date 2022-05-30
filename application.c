@@ -6,10 +6,10 @@
 */
 
 #include "application.h"
-#include "event_group_config.h"
+#include "system_config/event_group_config.h"
 
-#include "sensors/temp_hum_sensor.h"
-#include "sensors/co2_sensor.h"
+#include "sensors/headers/temp_hum_sensor.h"
+#include "sensors/headers/co2_sensor.h"
 #include "loraWan/headers/loraWan_up_link_handler.h"
 #include "datastructures/measurment.h"
 #include "LoRaWANHandler.h"

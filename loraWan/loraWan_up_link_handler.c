@@ -31,11 +31,11 @@ static void append_to_payload_data(pMeasurment_t);
 
 void loraWan_up_link_handler_initialize(UBaseType_t task_priority, MessageBufferHandle_t uplink_message_buffer){
 	
-    printf("sizeof(measurement): %d, count(measurements): %d", sizeof(measurment_t), NUMBER_OF_MEASUREMENTS_TO_SEND)
+    printf("sizeof(measurement): %d, count(measurements): %d", sizeof(measurment_t), NUMBER_OF_MEASUREMENTS_TO_SEND);
     
 	sizeOfPayLoadData = sizeof(measurment_t) * NUMBER_OF_MEASUREMENTS_TO_SEND;
 	
-    printf("payload data: %d", sizeOfPayLoadData)
+    printf("payload data: %d", sizeOfPayLoadData);
     
 	_uplink_message_buffer = uplink_message_buffer;
 	
