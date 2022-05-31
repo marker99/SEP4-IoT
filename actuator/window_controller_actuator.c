@@ -56,28 +56,16 @@ void window_controller_actuator_task_run(){
 	thread_safe_printf("\n>Window Controller < : check indoor climate!\n");
 	
 	
-	if (_co2_threshold_exceeded() || _max_temperature_exceeded() || _humidity_threshold_exceeded() ){
+	if (_co2_threshold_exceeded() || _max_temperature_exceeded() ){
 		thread_safe_printf(">Window Controller < : limit exceeded!\n");
 		_open_window();
-	}else if (_min_temperature_exceeded() ){
+	}else if (_min_temperature_exceeded()){
 		_close_window();
+	} else if ( _humidity_threshold_exceeded()){
+		_open_window();
 	}
 	
 		
-		
-	/*
-	else if (_max_temperature_exceeded()){
-		thread_safe_printf(">Window Controller < : max temperatur limit exceeded!");
-		_open_window();
-	}
-	else if (_min_temperature_exceeded()){
-		thread_safe_printf(">Window Controller < : min temperatur limit exceeded!");
-		_close_window();
-	}
-	else if (_humidity_threshold_exceeded()){
-		thread_safe_printf(">Window Controller < : humidity limit exceeded!");
-		_open_window();
-	}*/
 	UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
 	thread_safe_printf("\n>window controller end Stack Size %d\n", uxHighWaterMark);
 }
@@ -103,11 +91,11 @@ static bool _co2_threshold_exceeded(){
 }
 
 static bool _max_temperature_exceeded(){
-	return (temp_hum_getTemperature() + configMutex_getTemperatureMargin()) > configMutex_getTargetTemperature();
+	return temp_hum_getTemperature()  > configMutex_getTargetTemperature() + configMutex_getTemperatureMargin();
 }
 
 static bool _min_temperature_exceeded(){
-	return (temp_hum_getTemperature() - configMutex_getTemperatureMargin()) < configMutex_getTargetTemperature();
+	return temp_hum_getTemperature()  < configMutex_getTargetTemperature() - configMutex_getTemperatureMargin();
 }
 
 

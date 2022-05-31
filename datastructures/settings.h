@@ -2,7 +2,7 @@
  * settings.h
  *
  * Created: 26-05-2022 14:29:16
- *  Author: sande
+ *  Author: sander
  */ 
 
 
