@@ -56,7 +56,7 @@ void window_controller_actuator_task_run(){
 	thread_safe_printf("\n>Window Controller < : check indoor climate!\n");
 	
 	
-	if (_co2_threshold_exceeded() || _max_temperature_exceeded() ){
+	if (_co2_threshold_exceeded() || _max_temperature_exceeded()){
 		thread_safe_printf(">Window Controller < : limit exceeded!\n");
 		_open_window();
 	}else if (_min_temperature_exceeded()){
@@ -100,11 +100,13 @@ static bool _min_temperature_exceeded(){
 
 
 static void _close_window(){
+	thread_safe_printf("\n>window controller close window \n");
 	rc_servo_setPosition( SERVO_NO, -100);
 	_window_is_closed = 1;
 }
 
 static void _open_window(){
+	thread_safe_printf("\n>window controller open window \n");
 	rc_servo_setPosition( SERVO_NO, 100);
 	_window_is_closed = 0;
 }

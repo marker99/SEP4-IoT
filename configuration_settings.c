@@ -18,6 +18,8 @@ static SemaphoreHandle_t semaphore;
 
 void configMutex_create(){
 	semaphore = xSemaphoreCreateMutex();
+	
+	// Set default climate settings
 	_targetTemperature  = 220;
 	_temperatureMargin = 20;
 	_humidityThreshold = 600;
