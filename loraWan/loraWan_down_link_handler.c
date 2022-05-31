@@ -41,21 +41,20 @@ void loraWan_down_link_handler_initialize(UBaseType_t taskPriority, MessageBuffe
 
 
 void loraWan_down_link_handler_task_run(void){
-      thread_safe_printf("Downlink: running\n");
-    // May need a Delay here
-    
-	vTaskDelay(500);
+      thread_safe_printf("Down link: running\n");
+
     // Read the Data from the Message Buffer
     size_t received = xMessageBufferReceive(_downLinkMessageBuffer,
     (void*)&_down_link_payload_buffer,
     sizeof(lora_driver_payload_t),
-    pdMS_TO_TICKS(60000));
+    portMAX_DELAY);
     
 
     // Ensure Byte count is correct
     if (received != sizeof(lora_driver_payload_t)) {
         thread_safe_printf("Incorrect size of payload\nNeeded: %d | Got: %d\n", sizeof(lora_driver_payload_t), received);
-    }
+		return;
+	}
 	
 	int i;
 	for (i = 0; i < sizeof(_down_link_payload_buffer.bytes); i++)
@@ -88,6 +87,8 @@ void loraWan_down_link_handler_task_run(void){
     configMutex_setTemperatureMargin(temperature_margin);
     configMutex_setHumidityThreshold(humidity_threshold);
     configMutex_setCO2Threshold(co2_threshold);*/
+	
+	// check how much stack size this tasks uses
 		UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
 		thread_safe_printf("\n>dolink end Stack Size %d\n", uxHighWaterMark);
 		
