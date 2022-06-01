@@ -13,13 +13,13 @@
 #include <status_leds.h>
 #include <stdio.h>
 //#include <rc_servo.h>
-#include "util/thread_safe_printf.h"
+#include "util/headers/thread_safe_printf.h"
 #include "application.h"
 #include "LoRaWANHandler.h"
 #include "sensors/headers/temp_hum_sensor.h"
 #include "sensors/headers/co2_sensor.h"
 #include "actuator/headers/window_controller.h"
-#include "configuration_settings.h"
+#include "settings/headers/configuration_settings.h"
 #include "loraWan/headers/LoRaWANHandler.h"
 
 // Data Object

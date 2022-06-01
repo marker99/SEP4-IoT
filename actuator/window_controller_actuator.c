@@ -10,11 +10,11 @@
 #include <task.h>
 
 #include "headers/window_controller.h"
-#include "configuration_settings.h"
+#include "settings/headers/configuration_settings.h"
 #include "time_interval_config.h"
 #include "temp_hum_sensor.h"
 #include "co2_sensor.h"
-#include "util/thread_safe_printf.h"
+#include "util/headers/thread_safe_printf.h"
 
 
 static TickType_t _xLastWakeTime;

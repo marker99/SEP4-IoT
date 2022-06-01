@@ -10,7 +10,7 @@
 #include "temp_hum_sensor.h"
 #include "event_group_config.h"
 #include <status_leds.h>
-#include "util/thread_safe_printf.h"
+#include "util/headers/thread_safe_printf.h"
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;
 

@@ -12,7 +12,7 @@
 #include "event_group_config.h"
 #include <timers.h>
 #include <status_leds.h>
-#include "util/thread_safe_printf.h"
+#include "util/headers/thread_safe_printf.h"
 // Static Variables
 static EventGroupHandle_t _dataReadyEventGroup;
 static EventGroupHandle_t _measureEventGroup;

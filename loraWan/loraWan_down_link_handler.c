@@ -14,9 +14,9 @@
 
 // Includes
 #include "headers/loraWan_down_link_handler.h"
-#include "configuration_settings.h"
+#include "settings/headers/configuration_settings.h"
 #include "settings.h"
-#include "util/thread_safe_printf.h"
+#include "util/headers/thread_safe_printf.h"
 
 // Static Variables
 //static TickType_t _xLastWakeTime;

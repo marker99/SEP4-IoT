@@ -5,7 +5,7 @@
 *  Author: Sander
 */
 #include "headers/loraWan_up_link_handler.h"
-#include "util/thread_safe_printf.h"
+#include "util/headers/thread_safe_printf.h"
 #include <ATMEGA_FreeRTOS.h>
 #include <message_buffer.h>
 #include <lora_driver.h>
@@ -96,7 +96,7 @@ void loraWan_up_link_handler_task(void *pvParameters){
 static void prepare_uplink_payload(){
 	_uplink_payload_p = pvPortMalloc(sizeof(lora_driver_payload_t));
 	
-	_uplink_payload_p->portNo = 23;
+	_uplink_payload_p->portNo = 1;
 	_uplink_payload_p->len = sizeOfPayLoadData;
 
 }

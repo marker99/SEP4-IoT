@@ -13,7 +13,7 @@
 #include <avr/interrupt.h>
 #include <serial.h>
 #include <task.h>
-#include "thread_safe_printf.h"
+#include "headers/thread_safe_printf.h"
 
 static SemaphoreHandle_t _semaphore;
 

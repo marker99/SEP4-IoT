@@ -7,7 +7,7 @@
 
 #include "application.h"
 #include "system_config/event_group_config.h"
-#include "util/thread_safe_printf.h"
+#include "util/headers/thread_safe_printf.h"
 #include "sensors/headers/temp_hum_sensor.h"
 #include "sensors/headers/co2_sensor.h"
 #include "loraWan/headers/loraWan_up_link_handler.h"

@@ -15,7 +15,7 @@
 #include "LoRaWANHandler.h"
 #include "measurment.h"
 #include "settings.h"
-#include "util/thread_safe_printf.h"
+#include "util/headers/thread_safe_printf.h"
 #include <stddef.h>
 #include <stdio.h>
 
