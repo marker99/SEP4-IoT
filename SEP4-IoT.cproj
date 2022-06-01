@@ -272,10 +272,10 @@
     <Compile Include="system_config\time_interval_config.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="util\thread_safe_printf.c">
+    <Compile Include="util\headers\thread_safe_printf.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="util\thread_safe_printf.h">
+    <Compile Include="util\thread_safe_printf.c">
       <SubType>compile</SubType>
     </Compile>
     <None Include="FreeRTOS\Example\main.c">
@@ -393,6 +393,7 @@
     <Folder Include="system_config" />
     <Folder Include="sensors" />
     <Folder Include="sensors\headers\" />
+    <Folder Include="util\headers" />
   </ItemGroup>
   <ItemGroup>
     <None Include="drivers\.git">
