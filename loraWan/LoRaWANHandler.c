@@ -85,17 +85,16 @@ static void _lora_setup(void)
     char _out_buf[20];
     lora_driver_returnCode_t rc;
     
-    status_leds_slowBlink(led_ST2); // OPTIONAL: Led the green led blink slowly while we are setting up LoRa
+    status_leds_slowBlink(led_ST2);
     
     // Factory reset the transceiver
     thread_safe_printf("FactoryReset >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_rn2483FactoryReset()));
-    
-	lora_driver_configureToEu868();
-
+	
+    lora_driver_configureToEu868();
+     
     // Get the transceivers HW EUI
     rc = lora_driver_getRn2483Hweui(_out_buf);
 	
-    lora_driver_mapReturnCodeToText(rc);
 
     lora_driver_setDeviceIdentifier(_out_buf);
 

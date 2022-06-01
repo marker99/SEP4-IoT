@@ -11,6 +11,7 @@
 #include <message_buffer.h>
 #include <lora_driver.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 // Includes
 #include "headers/loraWan_down_link_handler.h"
@@ -21,13 +22,13 @@
 // Static Variables
 //static TickType_t _xLastWakeTime;
 static MessageBufferHandle_t _downLinkMessageBuffer;
-static lora_driver_payload_t _down_link_payload_buffer;
+static lora_driver_payload_t *_down_link_payload_buffer;
 
 
 void loraWan_down_link_handler_initialize(UBaseType_t taskPriority, MessageBufferHandle_t downLinkBuffer){
     // Set Internal Message Buffer Variable to the initialised one
     _downLinkMessageBuffer = downLinkBuffer;
-    
+    _down_link_payload_buffer = malloc(sizeof(lora_driver_payload_t));
     // Create the DownLink Handler Task
     xTaskCreate(loraWan_down_link_handler_task,
     "down_link_handler_task",
@@ -43,7 +44,7 @@ void loraWan_down_link_handler_task_run(void){
 
     // Read the Data from the Message Buffer
     size_t received = xMessageBufferReceive(_downLinkMessageBuffer,
-    (void*)&_down_link_payload_buffer,
+    (void*)_down_link_payload_buffer,
     sizeof(lora_driver_payload_t),
     portMAX_DELAY);
     
@@ -55,10 +56,10 @@ void loraWan_down_link_handler_task_run(void){
 	}
 	
 	int i;
-	for (i = 0; i < sizeof(_down_link_payload_buffer.bytes); i++)
+	for (i = 0; i < sizeof(_down_link_payload_buffer->bytes); i++)
 	{
 		
-		thread_safe_printf("%s", _down_link_payload_buffer.bytes[i]);
+		thread_safe_printf("%s", _down_link_payload_buffer->bytes[i]);
 	}
 	thread_safe_printf("\n");
 	
@@ -87,8 +88,8 @@ void loraWan_down_link_handler_task_run(void){
     configMutex_setCO2Threshold(co2_threshold);*/
 	
 	// check how much stack size this tasks uses
-		UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
-		thread_safe_printf("\n>dolink end Stack Size %d\n", uxHighWaterMark);
+	//UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
+	//thread_safe_printf("\n>dolink end Stack Size %d\n", uxHighWaterMark);
 		
 }
 

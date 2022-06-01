@@ -72,8 +72,8 @@ void loraWan_up_link_handler_task_run(){
 	*/
 
 	send_payload();
-	UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
-	thread_safe_printf("\n>uplink end Stack Size %d\n", uxHighWaterMark);
+	//UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
+	//thread_safe_printf("\n>uplink end Stack Size %d\n", uxHighWaterMark);
 }
 
 void loraWan_up_link_handler_task(void *pvParameters){
@@ -122,6 +122,7 @@ void loraWan_up_link_handler_append_to_payload_data(pMeasurment_t newMeasurment)
 static void send_payload(){
 	// send to loraWan using loraWan drivers
 	thread_safe_printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(true, _uplink_payload_p)));
+	// reset load index
 	payLoadSlot = 0;
 }
 

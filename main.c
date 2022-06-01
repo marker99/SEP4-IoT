@@ -8,11 +8,10 @@
 
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
-//#include <semphr.h>
 #include <serial.h>
 #include <status_leds.h>
 #include <stdio.h>
-//#include <rc_servo.h>
+
 #include "util/headers/thread_safe_printf.h"
 #include "application.h"
 #include "LoRaWANHandler.h"
@@ -35,10 +34,9 @@ void initialiseSystem()
 	
 	//create config settings mutex
 	configMutex_create();
-	
-	// vvvvvvvvvvvvvvvvv BELOW IS LoRaWAN initialization vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
 	// Status LEDs driver
-	status_leds_initialise(5); // Priority 5 for internal task
+	status_leds_initialise(5);
 	
 	// Initialize LoRaWAN
 	lora_handler_initialize(1);

@@ -5,6 +5,8 @@
 * Author: Sander
 */
 
+#include <stdlib.h>
+
 #include "application.h"
 #include "system_config/event_group_config.h"
 #include "util/headers/thread_safe_printf.h"
@@ -13,7 +15,6 @@
 #include "loraWan/headers/loraWan_up_link_handler.h"
 #include "datastructures/measurment.h"
 #include "LoRaWANHandler.h"
-#include <stdlib.h>
 #include "time_interval_config.h"
 
 static EventGroupHandle_t _dataReadyEventGroup;

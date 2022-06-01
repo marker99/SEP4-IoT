@@ -66,8 +66,8 @@ void window_controller_actuator_task_run(){
 	}
 	
 		
-	UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
-	thread_safe_printf("\n>window controller end Stack Size %d\n", uxHighWaterMark);
+	//UBaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
+	//thread_safe_printf("\n>window controller end Stack Size %d\n", uxHighWaterMark);
 }
 
 
