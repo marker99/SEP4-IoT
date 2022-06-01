@@ -101,7 +101,6 @@ void application_task_run(){
 	newMeasurment->temperature, newMeasurment->humidity, newMeasurment->co2PartsPrMillion);
 
 	loraWan_up_link_handler_append_to_payload_data(newMeasurment);	
-	
 
 }
 
