@@ -272,6 +272,9 @@
     <Compile Include="system_config\time_interval_config.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="system_config\up_link_data_config.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="util\headers\thread_safe_printf.h">
       <SubType>compile</SubType>
     </Compile>

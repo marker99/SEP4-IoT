@@ -24,7 +24,6 @@
 #define LORA_APP_EUI "E3F46724321C3AFF"
 #define LORA_APP_KEY "70392C359F1F97A044173202961DB664"
 
-static MessageBufferHandle_t lorawan_handler_uplink_message_Buffer;
 static MessageBufferHandle_t lorawan_handler_downlink_message_buffer;
 
 // Declaration of private functions
@@ -33,13 +32,13 @@ static void _lora_setup(void);
 void lora_handler_initialize(UBaseType_t lora_handler_task_priority)
 {
     // Initialize Message Buffers
-    lorawan_handler_uplink_message_Buffer = xMessageBufferCreate((10 * sizeof(measurment_t)));
+  
     lorawan_handler_downlink_message_buffer = xMessageBufferCreate((3 * sizeof(lora_driver_payload_t)));
     
     // Initialize Driver, UpLink Handler and downlink handler
     lora_driver_initialise(lora_handler_task_priority, lorawan_handler_downlink_message_buffer);
 	
-    loraWan_up_link_handler_initialize(lora_handler_task_priority, lorawan_handler_uplink_message_Buffer);
+    loraWan_up_link_handler_initialize(lora_handler_task_priority);
 	loraWan_down_link_handler_initialize(lora_handler_task_priority, lorawan_handler_downlink_message_buffer);
 
     xTaskCreate(

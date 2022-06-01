@@ -28,8 +28,6 @@ void loraWan_down_link_handler_initialize(UBaseType_t taskPriority, MessageBuffe
     // Set Internal Message Buffer Variable to the initialised one
     _downLinkMessageBuffer = downLinkBuffer;
     
-	//_down_link_payload_buffer = pvPortMalloc(sizeof(lora_driver_payload_t));
-	
     // Create the DownLink Handler Task
     xTaskCreate(loraWan_down_link_handler_task,
     "down_link_handler_task",
